@@ -1,4 +1,4 @@
-export class Either<TLeft, TRight> {
+export class Either<TLeft, TRight>{
     private readonly value: TLeft | TRight;
     private readonly left: boolean;
 

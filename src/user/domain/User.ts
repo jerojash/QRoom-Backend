@@ -4,7 +4,7 @@ import { UserFullName } from "./valueObjects/UserFullName";
 import { UserPhoneNumber } from "./valueObjects/UserPhoneNumber";
 import { UserId } from "./valueObjects/UserId";
 
-export class Usuario{
+export class User{
     private constructor(
         private credentials: UserCredential,
         private names: UserFullName,
@@ -27,5 +27,16 @@ export class Usuario{
     public getId(): UserId|undefined {
         return this.id;
     }
-  
+
+    static create(username: string, password: string, email: string, first_name: string, 
+        last_name: string, code_area_1: string, phone_number_1: 
+        string, id?: string): Either<string,User>{
+            const credencialAux = UserCredential.create(username,password,email);
+
+            if(credencialAux.isLeft()) return Either.makeLeft<string,User>(credencialAux.getLeft());
+
+            return Either.makeRight<string,User>(new User(
+                credencialAux.getRight(), new UserFullName(first_name,last_name),
+                new UserPhoneNumber(code_area_1, phone_number_1)))
+    }
 }

@@ -1,22 +1,25 @@
 import { Either } from "src/generics/Either";
+import { v4 as uuid}  from "uuid"; 
 
 export class UserId{
+    
+    
     constructor(
-        private id: number
+        private id: string
     ){}
 
 
-    getIDUser(): number{
+    getIDUser(): string{
         return this.id;
     }
 
-    static create(id:number): UserId{
-        return new UserId(id);
+    static create(): UserId{
+        return new UserId(uuid());
     }
 
-    static addIdTo(id?:number): Either<Error,UserId>{
-        if(id===undefined) return Either.makeLeft<Error,UserId>(Error("No se ha ingresado el ID del usuario"))
-        else return Either.makeRight<Error,UserId>(new UserId(id))
-    }
+    // static addIdTo(id?:string): Either<Error,UserId>{
+    //     if(id===undefined) return Either.makeLeft<Error,UserId>(Error("No uuid added"))
+    //     else return Either.makeRight<Error,UserId>(new UserId(id))
+    // }
 
 }

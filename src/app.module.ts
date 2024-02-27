@@ -1,7 +1,22 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './user/application/user.module';
+import { UserModule } from './user/infrastructure/user.module';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [UserModule],
+  imports: [UserModule,
+    ConfigModule.forRoot(),
+
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.DB_HOST,
+      port: +process.env.DB_PORT,
+      database: process.env.DB_NAME,
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASS,
+      autoLoadEntities: true,
+      synchronize: true
+    }),
+  ],
 })
 export class AppModule {}

@@ -6,8 +6,7 @@ export class UserEntity extends BaseEntity{
     id: string
 
     @Column('text',{
-        unique: true,
-        
+        unique: true
     })
     username: string
 

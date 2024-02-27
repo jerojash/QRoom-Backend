@@ -31,6 +31,10 @@ export class adapterUserRepository implements IUser<UserEntity> {
       const resultado = await this.repositorio.save(userToCreate);
       return Either.makeRight<Error, UserEntity>(resultado);
     }catch(error){
+      if(error.code === `23505` ) {
+        return Either.makeLeft<Error, UserEntity>(new Error(`User exits in database ${ JSON.stringify( error.detail ) }`));
+      }
+      console.log(error);
       return Either.makeLeft<Error, UserEntity>(error);
   }
   }

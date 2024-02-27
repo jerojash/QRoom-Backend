@@ -5,16 +5,22 @@ export class UserId{
     
     
     constructor(
-        private id: string
-    ){}
+        private id?: string
+    ){
+        if(id===undefined){
+            this.id = uuid();
+        }else{
+            this.id = id;
+        }
+    }
 
 
     getIDUser(): string{
         return this.id;
     }
 
-    static create(): UserId{
-        return new UserId(uuid());
+    static create(id?: string): UserId{
+        return new UserId(id);
     }
 
     // static addIdTo(id?:string): Either<Error,UserId>{

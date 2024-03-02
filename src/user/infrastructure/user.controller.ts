@@ -19,7 +19,7 @@ export class UserController {
     let result = await this.createUser.execute(createUserDto);
     
     if (result.isLeft()) {
-      return res.status(HttpStatus.NOT_FOUND).json(result.getLeft().message);
+      return res.status(HttpStatus.CONFLICT).json(result.getLeft().message);
     }else{
       return res.status(HttpStatus.OK).json(result.getRight());
     }

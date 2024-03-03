@@ -36,6 +36,21 @@ export class adapterUserRepository implements IUser<UserEntity> {
       }
       console.log(error);
       return Either.makeLeft<Error, UserEntity>(error);
+    } 
   }
+
+   async getUsers(idUser: string): Promise<Either<Error, UserEntity[]>> {
+    
+    try {
+      let result = await this.repositorio.find();
+      return Either.makeRight<Error, UserEntity[]>(result)
+    } catch (error) {
+      return Either.makeLeft<Error,UserEntity[]>(new Error("Error, try later"))
+      
+    }
+    
+
+
   }
+
 }

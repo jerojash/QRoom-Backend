@@ -23,7 +23,6 @@ export class UserController {
     }else{
       return res.status(HttpStatus.OK).json(result.getRight());
     }
-    
   }
 
   // @Get()

@@ -39,7 +39,7 @@ export class adapterUserRepository implements IUser<UserEntity> {
     } 
   }
 
-   async getUsers(idUser: string): Promise<Either<Error, UserEntity[]>> {
+   async getUsers(): Promise<Either<Error, UserEntity[]>> {
     
     try {
       let result = await this.repositorio.find();

@@ -4,13 +4,16 @@ import { UpdateUserDto } from '../application/dto/update-user.dto';
 import { createUserService } from '../application/createUserService';
 import { adapterUserRepository } from './user.adapter';
 import { UserEntity } from './entities/user.entity';
+import { getUserService } from '../application/getUserService';
 
 @Controller('user')
 export class UserController {
   constructor( private readonly repoIuser: adapterUserRepository,
-    private readonly createUser: createUserService<UserEntity>
+    private readonly createUser: createUserService<UserEntity>,
+    private readonly getUsers: getUserService<UserEntity>
     ) {
-      this.createUser = new createUserService(repoIuser)
+      this.createUser = new createUserService(repoIuser);
+      this.getUsers = new getUserService(repoIuser);
     }
 
   @Post()
@@ -25,10 +28,16 @@ export class UserController {
     }
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.userService.findAll();
-  // }
+  @Get()
+  async findAll(@Response() res) {
+    let result = await this.getUsers.execute();
+    
+    if (result.isLeft()) {
+      return res.status(HttpStatus.CONFLICT).json(result.getLeft().message);
+    }else{
+      return res.status(HttpStatus.OK).json(result.getRight());
+    }
+  }
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {

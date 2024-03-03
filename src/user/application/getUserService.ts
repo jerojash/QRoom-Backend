@@ -8,8 +8,8 @@ export class getUserService<T>{
     constructor(repo: IUser<T>) {
         this.UserRepository = repo;
     }
-    async execute(id: string): Promise<Either<Error,T[]>>{
-        return this.UserRepository.getUsers(id)
+    async execute(): Promise<Either<Error,T[]>>{
+        return this.UserRepository.getUsers()
     }
 
 }

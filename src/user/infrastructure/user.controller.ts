@@ -27,6 +27,7 @@ export class UserController {
       return res.status(HttpStatus.OK).json(result.getRight());
     }
   }
+  
 
   @Get()
   async findAll(@Response() res) {

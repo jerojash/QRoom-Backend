@@ -8,7 +8,7 @@ export class UserPhoneNumber{
         return this.code_area_1;
     }
 
-    public getPhoneNumer1(): string{
+    public getPhoneNumber1(): string{
         return this.phone_number_1;
     }
 

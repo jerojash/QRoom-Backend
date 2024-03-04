@@ -7,7 +7,7 @@ export class UserCredential{
         public email: string
     ){}
 
-    getusername(): string{
+    getUserName(): string{
         return this.username
     }
 

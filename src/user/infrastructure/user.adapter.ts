@@ -7,29 +7,36 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Either } from 'src/generics/Either';
 import { User } from '../domain/User';
+import { RolEntity } from 'src/rol/infrastructure/entities/rol.entity';
 
 @Injectable()
 export class adapterUserRepository implements IUser<UserEntity> {
 
   constructor(
     @InjectRepository(UserEntity)
-    private readonly repositorio: Repository<UserEntity>
+    private readonly repository: Repository<UserEntity>,
+
+    @InjectRepository(RolEntity)
+    private readonly repositoryRol: Repository<RolEntity>
   ) {}
 
-  async userRegister(usuario: User): Promise<Either<Error, UserEntity>> {
+  async userRegister(user: User): Promise<Either<Error, UserEntity>> {
+    const rol = await this.repositoryRol.findOneBy({name: "HK"});
     const userToCreate: UserEntity = UserEntity.create();
-          userToCreate.id = usuario.getId().getIDUser();
-          userToCreate.username = usuario.getCredentials().getusername()
-          userToCreate.email = usuario.getCredentials().getEmail();
-          userToCreate.password = usuario.getCredentials().getPassword();
-          userToCreate.first_name = usuario.getNames().getFirstName();
-          userToCreate.last_name = usuario.getNames().getLastName();
-          userToCreate.phone_number_1 = usuario.getPhoneNumber().getPhoneNumer1();
-          userToCreate.code_area_1 = usuario.getPhoneNumber().getCodeArea1();
+          userToCreate.id = user.getId().getIDUser();
+          userToCreate.username = user.getCredentials().getUserName()
+          userToCreate.email = user.getCredentials().getEmail();
+          userToCreate.password = user.getCredentials().getPassword();
+          userToCreate.first_name = user.getNames().getFirstName();
+          userToCreate.last_name = user.getNames().getLastName();
+          userToCreate.phone_number_1 = user.getPhoneNumber().getPhoneNumber1();
+          userToCreate.code_area_1 = user.getPhoneNumber().getCodeArea1();
+          userToCreate.rol = rol;
     try{
       
-      const resultado = await this.repositorio.save(userToCreate);
-      return Either.makeRight<Error, UserEntity>(resultado);
+      const result = await this.repository.save(userToCreate);
+      return Either.makeRight<Error, UserEntity>(userToCreate);
+
     }catch(error){
       if(error.code === `23505` ) {
         return Either.makeLeft<Error, UserEntity>(new Error(`User exits in database ${ JSON.stringify( error.detail ) }`));
@@ -42,7 +49,7 @@ export class adapterUserRepository implements IUser<UserEntity> {
    async getUsers(): Promise<Either<Error, UserEntity[]>> {
     
     try {
-      let result = await this.repositorio.find();
+      let result = await this.repository.find();
       return Either.makeRight<Error, UserEntity[]>(result)
     } catch (error) {
       return Either.makeLeft<Error,UserEntity[]>(new Error("Error, try later"))

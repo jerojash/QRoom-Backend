@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { RolEntity } from "src/rol/infrastructure/entities/rol.entity";
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 @Entity({ name: 'user' })
 export class UserEntity extends BaseEntity{
@@ -31,4 +32,10 @@ export class UserEntity extends BaseEntity{
         nullable:true
     })
     phone_number_1: string
+
+    @ManyToOne(
+        ()=>RolEntity,
+        (rol) => rol.users
+    )
+    rol: RolEntity
 }

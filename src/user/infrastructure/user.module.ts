@@ -6,10 +6,12 @@ import { UserEntity } from './entities/user.entity';
 import { createUserService } from '../application/createUserService';
 import { getUserService } from '../application/getUserService';
 import { RolEntity } from 'src/rol/infrastructure/entities/rol.entity';
+import { authService } from '../application/authService';
 
 @Module({
   controllers: [UserController],
-  providers: [adapterUserRepository, createUserService, getUserService],
+  providers: [adapterUserRepository, createUserService, getUserService,
+  authService],
   imports:[
     TypeOrmModule.forFeature([UserEntity]),
     TypeOrmModule.forFeature([RolEntity])

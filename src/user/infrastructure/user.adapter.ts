@@ -53,11 +53,21 @@ export class adapterUserRepository implements IUser<UserEntity> {
       return Either.makeRight<Error, UserEntity[]>(result)
     } catch (error) {
       return Either.makeLeft<Error,UserEntity[]>(new Error("Error, try later"))
-      
+    
     }
     
+  }
 
-
+  async authUser(email: string, password: string): Promise<Either<Error, string>>{
+    const userLog = await this.repository.findOne({
+      where:{email:email,
+      password:password},
+      relations:{
+        rol:true
+      },
+    })
+    if(userLog) return Either.makeRight(userLog.rol.name)
+    return Either.makeLeft(new Error('Credenciales incorrectas'));
   }
 
 }

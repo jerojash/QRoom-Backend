@@ -5,15 +5,19 @@ import { createUserService } from '../application/createUserService';
 import { adapterUserRepository } from './user.adapter';
 import { UserEntity } from './entities/user.entity';
 import { getUserService } from '../application/getUserService';
+import { authService } from '../application/authService';
+import { AuthUserDto } from '../application/dto/auth-user.dto';
 
 @Controller('user')
 export class UserController {
   constructor( private readonly repoIuser: adapterUserRepository,
     private readonly createUser: createUserService<UserEntity>,
-    private readonly getUsers: getUserService<UserEntity>
+    private readonly getUsers: getUserService<UserEntity>,
+    private readonly authUser: authService<UserEntity>
     ) {
       this.createUser = new createUserService(repoIuser);
       this.getUsers = new getUserService(repoIuser);
+      this.authUser = new authService(repoIuser);
     }
 
   @Post()
@@ -32,6 +36,17 @@ export class UserController {
   @Get()
   async findAll(@Response() res) {
     let result = await this.getUsers.execute();
+    
+    if (result.isLeft()) {
+      return res.status(HttpStatus.CONFLICT).json(result.getLeft().message);
+    }else{
+      return res.status(HttpStatus.OK).json(result.getRight());
+    }
+  }
+
+  @Post('/auth')
+  async auth(@Body() AuthUserDto: AuthUserDto, @Response() res){
+    let result = await this.authUser.execute(AuthUserDto);
     
     if (result.isLeft()) {
       return res.status(HttpStatus.CONFLICT).json(result.getLeft().message);

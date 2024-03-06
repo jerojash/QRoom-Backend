@@ -1,5 +1,5 @@
-import { RolId } from "./valueObjects/rolId";
-import { RolName } from "./valueObjects/rolName";
+import { RolId } from "./valueObjects/RolId";
+import { RolName } from "./valueObjects/RolName";
 
 export class Rol{
 

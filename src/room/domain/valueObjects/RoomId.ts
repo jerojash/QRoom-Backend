@@ -8,7 +8,7 @@ export class RoomId{
         else this.id = id;
     }
 
-    getIdRol(): string{
+    getIdRoom(): string{
         return this.id;
     }
 

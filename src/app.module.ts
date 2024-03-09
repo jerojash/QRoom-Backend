@@ -4,9 +4,10 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RolModule } from './rol/infrastructure/rol.module';
 import { RoomModule } from './room/infrastructure/room.module';
+import { CleaningTypeModule } from './cleaningType/cleaningType/infrastructure/cleaning-type.module';
 
 @Module({
-  imports: [UserModule, RolModule, RoomModule,
+  imports: [UserModule, RolModule, RoomModule, CleaningTypeModule,
     ConfigModule.forRoot(),
 
     TypeOrmModule.forRoot({

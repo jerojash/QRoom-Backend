@@ -8,7 +8,7 @@ export class CleaningTypeId {
         else this.id = id;
     }
 
-    getIdRol(): string{
+    getId(): string{
         return this.id;
     }
 

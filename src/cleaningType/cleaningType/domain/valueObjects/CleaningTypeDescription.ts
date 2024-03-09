@@ -3,7 +3,7 @@ export class CleaningTypeDescription {
         private description: string
     ){}
 
-    public getName(): string {
+    public getDescription(): string {
         return this.description;
     }  
 }

@@ -40,9 +40,9 @@ export class UserCredential{
         //Es verdadero si todas las credenciales estan bien
         if(credenciales.credentialsValidation()) return Either.makeRight<string,UserCredential>(credenciales)
 
-        if(!credenciales.passwordValidation()){
-            return Either.makeLeft<string,UserCredential>('La clave ingresada es incorrecta')
-        } 
+        // if(!credenciales.passwordValidation()){
+        //     return Either.makeLeft<string,UserCredential>('La clave ingresada es incorrecta')
+        // } 
         return Either.makeLeft<string,UserCredential>('Se ha ingresado un correo invalido')
     }
 }

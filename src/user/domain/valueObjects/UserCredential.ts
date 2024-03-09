@@ -30,7 +30,7 @@ export class UserCredential{
     }
 
     public credentialsValidation(): Boolean{
-        return this.emailValidation() && this.passwordValidation()
+        return this.emailValidation() //&& this.passwordValidation()
     }
 
     public static create(username, clave, email): Either<string, UserCredential>{

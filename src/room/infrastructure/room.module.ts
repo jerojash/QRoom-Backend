@@ -1,9 +1,15 @@
 import { Module } from '@nestjs/common';
-import { RoomService } from './room.adapter';
+import { adapterRoomRepository } from './room.adapter';
 import { RoomController } from './room.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { RoomEntity } from './entities/room.entity';
+import { createRoomService } from '../application/createRoomService';
 
 @Module({
   controllers: [RoomController],
-  providers: [RoomService]
+  providers: [adapterRoomRepository, createRoomService],
+  imports:[
+    TypeOrmModule.forFeature([RoomEntity])
+  ]
 })
 export class RoomModule {}

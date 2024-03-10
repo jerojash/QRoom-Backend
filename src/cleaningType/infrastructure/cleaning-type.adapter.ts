@@ -38,7 +38,11 @@ export class cleaningTypeAdapter implements ICleaningType<CleaningTypeEntity> {
   async getCleaningType(): Promise<Either<Error, CleaningTypeEntity[]>> {
     
     try {
-      let result = await this.repository.find();
+      let result = await this.repository.find({
+        relations:{
+          check: true
+        }
+      });
       return Either.makeRight<Error, CleaningTypeEntity[]>(result)
     } catch (error) {
       return Either.makeLeft<Error,CleaningTypeEntity[]>(new Error("Error, try later"))

@@ -5,13 +5,15 @@ import { createCleaningTypeService } from '../application/createCleaningTypeServ
 import { CleaningTypeEntity } from './entities/cleaning-type.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getCleaningTypeService } from '../application/getCleaningTypeService';
+import { CleaningCheckEntity } from 'src/cleaningCheck/infrastructure/entities/cleaning-check.entity';
 
 @Module({
   controllers: [CleaningTypeController],
   providers: [cleaningTypeAdapter, createCleaningTypeService, 
     getCleaningTypeService],
   imports:[
-    TypeOrmModule.forFeature([CleaningTypeEntity])
+    TypeOrmModule.forFeature([CleaningTypeEntity]),
+    TypeOrmModule.forFeature([CleaningCheckEntity])
   ]
 })
 export class CleaningTypeModule {}

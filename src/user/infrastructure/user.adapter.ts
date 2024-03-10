@@ -58,7 +58,7 @@ export class adapterUserRepository implements IUser<UserEntity> {
     
   }
 
-  async authUser(email: string, password: string): Promise<Either<Error, string>>{
+  async authUser(email: string, password: string): Promise<Either<Error, UserEntity>>{
     const userLog = await this.repository.findOne({
       where:{email:email,
       password:password},
@@ -66,7 +66,7 @@ export class adapterUserRepository implements IUser<UserEntity> {
         rol:true
       },
     })
-    if(userLog) return Either.makeRight(userLog.rol.name)
+    if(userLog) return Either.makeRight(userLog)
     return Either.makeLeft(new Error('Credenciales incorrectas'));
   }
 

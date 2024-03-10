@@ -4,13 +4,16 @@ import { CreateCleaningTypeDto } from '../application/dto/create-cleaning-type.d
 import { UpdateCleaningTypeDto } from '../application/dto/update-cleaning-type.dto';
 import { createCleaningTypeService } from '../application/createCleaningTypeService';
 import { CleaningTypeEntity } from './entities/cleaning-type.entity';
+import { getCleaningTypeService } from '../application/getCleaningTypeService';
 
 @Controller('cleaning-type')
 export class CleaningTypeController {
   constructor(private readonly cleaningTypeAdapter: cleaningTypeAdapter,
-    private readonly createCleaningService: createCleaningTypeService<CleaningTypeEntity>) 
+    private readonly createCleaningService: createCleaningTypeService<CleaningTypeEntity>,
+    private readonly getCleaningService: getCleaningTypeService<CleaningTypeEntity>) 
     {
-      this.createCleaningService = new createCleaningTypeService(cleaningTypeAdapter)
+      this.createCleaningService = new createCleaningTypeService(cleaningTypeAdapter);
+      this.getCleaningService = new getCleaningTypeService(cleaningTypeAdapter);
     }
 
   @Post()
@@ -25,8 +28,15 @@ export class CleaningTypeController {
   }
 
   @Get()
-  findAll() {
-    return this.cleaningTypeAdapter.findAll();
+  async findAll(@Response() res) {
+    let result = await this.getCleaningService.execute();
+
+    if (result.isLeft()) {
+      return res.status(HttpStatus.CONFLICT).json(result.getLeft().message);
+    }else{
+      return res.status(HttpStatus.OK).json(result.getRight());
+    }
+
   }
 
   // @Get(':id')

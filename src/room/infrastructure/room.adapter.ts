@@ -38,7 +38,14 @@ export class adapterRoomRepository implements IRoom<RoomEntity> {
   }
 
    async getRoomById(id: string): Promise<Either<Error, RoomEntity>> {
-    return    
+    let result = await this.repository.findOne({
+      where: {
+        id:id
+      }
+    })
+
+    if (result) return Either.makeRight<Error,RoomEntity>(result);
+    return Either.makeLeft<Error,RoomEntity>(new Error('Room not found'));
   }
 }
 

@@ -1,15 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { adapterRoomRepository } from './room.adapter';
 import { CreateRoomDto } from '../application/dto/create-room.dto';
 import { UpdateRoomDto } from '../application/dto/update-room.dto';
 import { RoomEntity } from './entities/room.entity';
 import { createRoomService } from '../application/createRoomService';
+import { getRoomByIdService } from '../application/getRoomByIdService';
 
 @Controller('room')
 export class RoomController {
   constructor(private readonly repoIRoom: adapterRoomRepository,
-    private readonly createRoom: createRoomService<RoomEntity>) {
-      this.createRoom = new createRoomService(repoIRoom)
+    private readonly createRoom: createRoomService<RoomEntity>,
+    private readonly getRoomById: getRoomByIdService<RoomEntity>) {
+      this.createRoom = new createRoomService(repoIRoom);
+      this.getRoomById = new getRoomByIdService(repoIRoom);
     }
 
   @Post()
@@ -25,10 +28,13 @@ export class RoomController {
   //   return this.roomService.findAll();
   // }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.roomService.findOne(+id);
-  // }
+  @Get(':id')
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    let result =  await this.getRoomById.execute(id.toString());
+
+    if (result.isLeft()) return result.getLeft();
+    return result.getRight();
+  }
 
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto) {

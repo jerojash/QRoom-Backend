@@ -25,5 +25,7 @@ export class CleaningAction {
         return this.id_room;
     }
 
-    getCleaningActionIdHk(): UserId
+    getCleaningActionIdHk(): UserId {
+        return this.id_house_keeper
+    }
 }

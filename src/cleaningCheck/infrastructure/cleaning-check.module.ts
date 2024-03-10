@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { cleaningCheckAdapter } from './cleaning-check.adapter';
 import { CleaningCheckController } from './cleaning-check.controller';
 import { createCleaningCheckService } from '../application/createCleaningCheckService';
-import { CleaningCheckEntity } from './entities/cleaning-Check.entity';
+import { CleaningCheckEntity } from './entities/cleaning-check.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getCleaningCheckService } from '../application/getCleaningCheckService';
 import { CleaningTypeEntity } from 'src/cleaningType/infrastructure/entities/cleaning-type.entity';

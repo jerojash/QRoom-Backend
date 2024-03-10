@@ -28,4 +28,20 @@ export class CleaningAction {
     getCleaningActionIdHk(): UserId {
         return this.id_house_keeper
     }
+
+    getCleaningType(): CleaningTypeId {
+        return this.id_cleaning_type
+    }
+
+    getCleaningInitTimeHk(): InitialTimeHk {
+        return this.initial_time_hk
+    }
+
+    getCleaningIdSupervisor(): UserId {
+        return this.id_supervisor
+    }
+
+    getCleaningInitTimeSuper():  InitialTimeSup{
+        return this.initial_time_sup
+    }
 }

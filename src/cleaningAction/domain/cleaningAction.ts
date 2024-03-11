@@ -44,4 +44,14 @@ export class CleaningAction {
     getCleaningInitTimeSuper():  InitialTimeSup{
         return this.initial_time_sup
     }
+
+    public static create(id: string, id_room: string, id_hk, id_cleaning_type,
+        init_time_hk: string, id_sup: string, init_time_sup: string)
+    {
+        return new CleaningAction(new CleaningActionId(id),
+        new RoomId(id_room), new UserId(id_hk), 
+        new CleaningTypeId(id_cleaning_type),
+        new InitialTimeHk(init_time_hk), new UserId(id_sup), 
+        new InitialTimeSup(init_time_sup));
+    }
 }

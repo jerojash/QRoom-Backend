@@ -5,14 +5,17 @@ import { UpdateRoomDto } from '../application/dto/update-room.dto';
 import { RoomEntity } from './entities/room.entity';
 import { createRoomService } from '../application/createRoomService';
 import { getRoomByIdService } from '../application/getRoomByIdService';
+import { getRoomsService } from '../application/getRoomService';
 
 @Controller('room')
 export class RoomController {
   constructor(private readonly repoIRoom: adapterRoomRepository,
     private readonly createRoom: createRoomService<RoomEntity>,
-    private readonly getRoomById: getRoomByIdService<RoomEntity>) {
+    private readonly getRoomById: getRoomByIdService<RoomEntity>,
+    private readonly getRooms: getRoomsService<RoomEntity>) {
       this.createRoom = new createRoomService(repoIRoom);
       this.getRoomById = new getRoomByIdService(repoIRoom);
+      this.getRooms = new getRoomsService(repoIRoom);
     }
 
   @Post()
@@ -23,10 +26,13 @@ export class RoomController {
     return result.getRight();
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.roomService.findAll();
-  // }
+  @Get()
+  async findAll() {
+    let result =  await this.getRooms.execute();
+
+    if (result.isLeft()) return result.getLeft();
+    return result.getRight();
+  }
 
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {

@@ -33,19 +33,32 @@ export class adapterRoomRepository implements IRoom<RoomEntity> {
     return
   }
 
-  async getRooms(room: Room): Promise<Either<Error, RoomEntity[]>> {
-      return
+  async getRooms(): Promise<Either<Error, RoomEntity[]>> {
+    try {
+      let result = await this.repository.find()
+  
+      return Either.makeRight<Error,RoomEntity[]>(result);
+    } catch (error) {
+        console.log(error);
+        return Either.makeLeft<Error, RoomEntity[]>(error);
+    }
   }
+  
 
    async getRoomById(id: string): Promise<Either<Error, RoomEntity>> {
-    let result = await this.repository.findOne({
-      where: {
-        id:id
-      }
-    })
-
-    if (result) return Either.makeRight<Error,RoomEntity>(result);
-    return Either.makeLeft<Error,RoomEntity>(new Error('Room not found'));
-  }
+    try {
+      let result = await this.repository.findOne({
+        where: {
+          id:id
+        }
+      })
+  
+      if (result) return Either.makeRight<Error,RoomEntity>(result);
+      return Either.makeLeft<Error,RoomEntity>(new Error('Room not found'));
+    } catch (error) {
+        console.log(error);
+        return Either.makeLeft<Error, RoomEntity>(error);
+    }
+    }
 }
 

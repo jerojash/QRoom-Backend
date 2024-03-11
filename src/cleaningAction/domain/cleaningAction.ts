@@ -8,13 +8,13 @@ import { CleaningActionId } from "./valueObjects/CleaningActionId";
 export class CleaningAction {
 
     constructor(
-        private id: CleaningActionId,
         private id_room?: RoomId,
         private id_house_keeper?: UserId,
         private id_cleaning_type?: CleaningTypeId,
         private initial_time_hk?: InitialTimeHk,
         private id_supervisor?: UserId,
-        private initial_time_sup?: InitialTimeSup
+        private initial_time_sup?: InitialTimeSup,
+        private id?: CleaningActionId
     ){}
 
     getCleaningActionId(): CleaningActionId {
@@ -45,13 +45,13 @@ export class CleaningAction {
         return this.initial_time_sup
     }
 
-    public static create(id: string, id_room: string, id_hk, id_cleaning_type,
-        init_time_hk: string, id_sup: string, init_time_sup: string)
+    public static create(id_room?: string, id_hk?: string, id_cleaning_type?: string,
+        init_time_hk?: string, id_sup?: string, init_time_sup?: string, id?: string)
     {
-        return new CleaningAction(new CleaningActionId(id),
+        return new CleaningAction(
         new RoomId(id_room), new UserId(id_hk), 
         new CleaningTypeId(id_cleaning_type),
         new InitialTimeHk(init_time_hk), new UserId(id_sup), 
-        new InitialTimeSup(init_time_sup));
+        new InitialTimeSup(init_time_sup),new CleaningActionId(id));
     }
 }

@@ -16,7 +16,13 @@ export class CreateCleaningActionDto {
     @MinLength(1)
     @IsUUID()
     @IsOptional()
-    public id_user?: string
+    public id_hk?: string
+
+    @IsString()
+    @MinLength(1)
+    @IsUUID()
+    @IsOptional()
+    public id_sup?: string
 
     @IsString()
     @MinLength(1)
@@ -28,7 +34,13 @@ export class CreateCleaningActionDto {
     @MinLength(1)
     @IsOptional()
     @IsDate()
-    public time?: string
+    public time_hk?: string
+
+    @IsString()
+    @MinLength(1)
+    @IsOptional()
+    @IsDate()
+    public time_sup?: string
 
     @IsString()
     @MinLength(1)

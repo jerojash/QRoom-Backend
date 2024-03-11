@@ -3,22 +3,8 @@ import { IsString, MinLength, IsUUID, IsOptional, IsDate } from "class-validator
 export class CreateCleaningActionDto {
     @IsString()
     @IsUUID()
-    @IsOptional()
+    @MinLength(1)
     public id_room?: string 
-
-    @IsString()
-    @IsOptional()
-    public user_rol?: string 
-
-    @IsString()
-    @IsUUID()
-    @IsOptional()
-    public id_hk?: string
-
-    @IsString()
-    @IsUUID()
-    @IsOptional()
-    public id_sup?: string
 
     @IsString()
     @IsUUID()
@@ -26,13 +12,23 @@ export class CreateCleaningActionDto {
     public id_cleaning_type?: string
 
     @IsString()
+    @IsUUID()
     @IsOptional()
-    // @IsDate()
-    public time_hk?: string
+    public id_cleaning_action?: string
 
     @IsString()
-    @IsOptional()
+    @MinLength(1)
+    @IsUUID()
+    public id_user?: string
+
+    @IsString()
+    @MinLength(1)
+    public user_rol?: string 
+
+    @IsString()
+    @MinLength(1)
     // @IsDate()
-    public time_sup?: string
+    public time?: string
+
 
 }

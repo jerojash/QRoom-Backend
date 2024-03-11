@@ -38,41 +38,45 @@ export class CleaningActionAdapter implements ICleaningAction{
 
       cleaningActionToCreate.room_ = room;
 
-      let cleaning_type  = await this.repoType.findOne({
-        where: {
-          id: action.getCleaningType().getId()
-        }
-      })
-
-      if(!cleaning_type) return Either.makeLeft<Error, string>(new Error('Cleaning type not found'));
-
-      cleaningActionToCreate.cleaning_type_ = cleaning_type;
+      let user;
 
       if(action.getCleaningActionIdHk()){
-        let user_hk = await this.repoUser.findOne({
+         user = await this.repoUser.findOne({
           where: {
             id: action.getCleaningActionIdHk().getIDUser()
           }
         })
 
-        cleaningActionToCreate.hk_ = user_hk;
+        cleaningActionToCreate.hk_ = user;
 
         cleaningActionToCreate.initial_time_hk = action.getCleaningInitTimeHk().getTime();
-
+        
+        let cleaning_type  = await this.repoType.findOne({
+          where: {
+            id: action.getCleaningType().getId()
+          }
+        })
+  
+        if(!cleaning_type) return Either.makeLeft<Error, string>(new Error('Cleaning type not found'));
+  
+        cleaningActionToCreate.cleaning_type_ = cleaning_type;
+  
       }else if (action.getCleaningIdSupervisor()) {
-          let user_sup = await this.repoUser.findOne({
+          user = await this.repoUser.findOne({
             where: {
               id: action.getCleaningActionIdHk().getIDUser()
             }
           })
   
-          cleaningActionToCreate.sup_ = user_sup;
+          cleaningActionToCreate.sup_ = user;
   
           cleaningActionToCreate.initial_time_sup = action.getCleaningInitTimeSuper().getTime();
 
-      } else Either.makeLeft<Error, string>(new Error('Please insert an id_user_hk or id_user_sup'));
+      } else return Either.makeLeft<Error, string>(new Error('Please insert an id_user_hk or id_user_sup'));
 
-      const result = await this.repository.save(cleaningActionToCreate);
+      if(!user) return Either.makeLeft<Error, string>(new Error('User not found'));
+
+      await this.repository.save(cleaningActionToCreate);
       return Either.makeRight<Error, string>('Action registered');
     } catch (error) {
         console.log(error);

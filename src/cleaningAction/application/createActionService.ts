@@ -10,10 +10,17 @@ export class createActionService {
     }
     async execute(dto: CreateCleaningActionDto ): Promise<Either<Error,string>>{
 
-        const cleaningCheck = CleaningAction.create(dto.id_room,dto.id_hk,dto.id_cleaning_type,
-            dto.time_hk,dto.id_sup,dto.time_sup);
+        let cleaningAction;
 
-        let result = this.CleaningActionRepository.createCleaningAction(cleaningCheck);
+        if(dto.user_rol === 'HK') {
+            cleaningAction = CleaningAction.create(dto.id_room,dto.id_user,dto.id_cleaning_type,
+                dto.time);
+        } else {
+            cleaningAction = CleaningAction.create(dto.id_room,undefined, undefined, undefined,
+                dto.id_user, dto.time, dto.id_cleaning_action);
+        }
+        
+        let result = this.CleaningActionRepository.createCleaningAction(cleaningAction);
         return result
     }
 }

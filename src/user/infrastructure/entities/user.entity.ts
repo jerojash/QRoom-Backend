@@ -1,5 +1,6 @@
+import { CleaningActionEntity } from "src/cleaningAction/infrastructure/entities/cleaning-action.entity";
 import { RolEntity } from "src/rol/infrastructure/entities/rol.entity";
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 @Entity({ name: 'user' })
 export class UserEntity extends BaseEntity{
@@ -38,4 +39,16 @@ export class UserEntity extends BaseEntity{
         (rol) => rol.users
     )
     rol: RolEntity
+
+    @OneToMany(
+        ()=>CleaningActionEntity,
+        cleaningActionEntity => cleaningActionEntity.id_hk
+    )
+    actions: CleaningActionEntity
+
+    @OneToMany(
+        ()=>CleaningActionEntity,
+        cleaningActionEntity => cleaningActionEntity.id_sup
+    )
+    actions_sup: CleaningActionEntity
 }

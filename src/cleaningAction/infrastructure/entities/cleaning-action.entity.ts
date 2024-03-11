@@ -13,42 +13,34 @@ export class CleaningActionEntity extends BaseEntity{
         ()=>RoomEntity,
         (room) => room.actions
     )
-    @Column('text',{
-        name: 'id_room'
-    })
-    id_room: RoomEntity;
+    room_: RoomEntity;
 
     @ManyToOne(
         ()=>UserEntity,
         (user_hk) => user_hk.actions
     )
-    @Column('text',{
-        name: 'id_house_keeper'
-    })
-    id_hk: UserEntity;
+    hk_: UserEntity | null;
 
     @ManyToOne(
         ()=>CleaningTypeEntity,
         (cleaning_type) => cleaning_type.actions
     )
-    @Column('text',{
-        name: 'id_cleaning_type'
-    })
-    cleaning_type: CleaningTypeEntity;
+    cleaning_type_: CleaningTypeEntity;
 
-    @Column('date')
-    initial_time_hk: string;
+    @Column('date',{
+        nullable: true
+    })
+    initial_time_hk: string|null;
 
     @ManyToOne(
         ()=>UserEntity,
         (user_sup) => user_sup.actions_sup
     )
-    @Column('text',{
-        name: 'id_supervisor'
-    })
-    id_sup: string;
+    sup_: UserEntity | null;
 
-    @Column('date')
-    initial_time_sup: string
+    @Column('date',{
+        nullable: true
+    })
+    initial_time_sup: string|null
 
 }

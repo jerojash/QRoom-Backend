@@ -24,7 +24,7 @@ export class CleaningTypeEntity extends BaseEntity{
 
     @OneToMany(
         ()=>CleaningActionEntity,
-        cleaningActionEntity => cleaningActionEntity.cleaning_type
+        cleaningActionEntity => cleaningActionEntity.cleaning_type_
     )
     actions: CleaningActionEntity;
 

@@ -14,7 +14,7 @@ export class RoomEntity extends BaseEntity {
 
     @OneToMany(
         ()=>CleaningActionEntity,
-        cleaningActionEntity => cleaningActionEntity.id_room
+        cleaningActionEntity => cleaningActionEntity.room_
     )
     actions: CleaningActionEntity
 }

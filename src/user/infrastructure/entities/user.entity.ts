@@ -42,13 +42,13 @@ export class UserEntity extends BaseEntity{
 
     @OneToMany(
         ()=>CleaningActionEntity,
-        cleaningActionEntity => cleaningActionEntity.id_hk
+        cleaningActionEntity => cleaningActionEntity.hk_
     )
     actions: CleaningActionEntity
 
     @OneToMany(
         ()=>CleaningActionEntity,
-        cleaningActionEntity => cleaningActionEntity.id_sup
+        cleaningActionEntity => cleaningActionEntity.sup_
     )
     actions_sup: CleaningActionEntity
 }

@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { CleaningActionEntity } from "src/cleaningAction/infrastructure/entities/cleaning-action.entity";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name:'room'})
 export class RoomEntity extends BaseEntity {
@@ -10,4 +11,10 @@ export class RoomEntity extends BaseEntity {
 
     @Column('text')
     name: string
+
+    @OneToMany(
+        ()=>CleaningActionEntity,
+        cleaningActionEntity => cleaningActionEntity.room_
+    )
+    actions: CleaningActionEntity
 }

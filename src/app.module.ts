@@ -6,10 +6,11 @@ import { RolModule } from './rol/infrastructure/rol.module';
 import { RoomModule } from './room/infrastructure/room.module';
 import { CleaningTypeModule } from './cleaningType/infrastructure/cleaning-type.module';
 import { CleaningCheckModule } from './cleaningCheck/infrastructure/cleaning-check.module';
+import { CleaningActionModule } from './cleaningAction/infrastructure/cleaning-action.module';
 
 @Module({
   imports: [UserModule, RolModule, RoomModule, CleaningTypeModule,
-    CleaningCheckModule,
+    CleaningCheckModule, CleaningActionModule,
     ConfigModule.forRoot(),
 
     TypeOrmModule.forRoot({

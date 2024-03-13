@@ -27,7 +27,7 @@ export class CleaningActionEntity extends BaseEntity{
     )
     cleaning_type_: CleaningTypeEntity;
 
-    @Column('date',{
+    @Column('timestamp',{
         nullable: true
     })
     initial_time_hk: string|null;
@@ -38,7 +38,7 @@ export class CleaningActionEntity extends BaseEntity{
     )
     sup_: UserEntity | null;
 
-    @Column('date',{
+    @Column('timestamp',{
         nullable: true
     })
     initial_time_sup: string|null

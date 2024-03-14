@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Response, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Response, HttpStatus, Res } from '@nestjs/common';
 import { CleaningActionAdapter } from './cleaning-action.adapter';
 import { CreateCleaningActionDto } from '../application/dto/create-cleaning-action.dto';
 import { UpdateCleaningActionDto } from '../application/dto/update-cleaning-action.dto';
@@ -24,10 +24,20 @@ export class CleaningActionController {
     }
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.CleaningActionAdapter.findAll();
-  // }
+  @Get('/pdf')
+  async exportPdf(@Res() res): Promise<void> {
+
+    const buffer = await this.CleaningActionAdapter.exportPdf();
+
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment; filename-example.pdf',
+      'Content-Length': buffer.length,
+    })
+
+    res.end(buffer);
+
+  }
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {

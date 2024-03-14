@@ -10,7 +10,8 @@ import { CleaningActionEntity } from './entities/cleaning-action.entity';
 import { RoomEntity } from 'src/room/infrastructure/entities/room.entity';
 import { UserEntity } from 'src/user/infrastructure/entities/user.entity';
 import { CleaningTypeEntity } from 'src/cleaningType/infrastructure/entities/cleaning-type.entity';
-
+import { join } from 'path';
+const PDFDocument = require('pdfkit-table');
 @Injectable()
 export class CleaningActionAdapter implements ICleaningAction{
 
@@ -82,6 +83,90 @@ export class CleaningActionAdapter implements ICleaningAction{
         console.log(error);
         return Either.makeLeft<Error, string>(error);
     }
+  }
+
+  async exportPdf(): Promise<Buffer> {
+
+    const pdfBuffer: Buffer = await new Promise( resolve => {
+      const doc = new PDFDocument(
+        {
+          size: "LETTER",
+          bufferPages: true,
+          autoFirstPage: false
+        })
+
+        let pageNumber = 0;
+        doc.on('pageAdded', ()=>{
+          pageNumber++;
+
+          if (pageNumber > 1){
+            doc.image(join(process.cwd(), "upload/logo.png"), doc.page.width - 100, 5, {fit: [45,45], align: 'center'})
+            doc.moveTo(50, 55)
+            .lineTo(doc.page.width - 50, 55)
+            .stroke(); 
+          }
+
+          let bottom = doc.page.margins.bottom;
+
+          doc.page.margins.bottom = 0
+          doc.text(
+            'Pag. '+pageNumber,
+            (doc.page.width - 100)/2,
+            doc.page.height - 50,
+            {
+              width: 100,
+              align: 'center',
+              lineBreak: false,
+            }
+          )
+
+          doc.page.margins.bottom = bottom;
+
+        }
+        )
+
+        doc.addPage();
+        doc.image(join(process.cwd(), "upload/logo.png"), doc.page.width/2 - 100, 150, {width: 200,})
+        doc.text('',0,400);
+        doc.font("Helvetica-Bold").fontSize(24);
+        doc.text("QRoom",{
+          width: doc.page.width,
+          align: 'center'
+        });
+
+        doc.addPage();
+        doc.text("",60,60)
+        doc.font("Helvetica").fontSize(12);
+        doc.text("Children's Hospital Los Angeles",{
+          align: 'center'
+        });
+        doc.font("Helvetica-Bold").fontSize(12);
+        doc.text("Operating or Procedure Room Terminal Cleaning Log",{
+          align: 'center'
+        });
+
+        //Create table
+        const table = {
+          title: "Cleaning",
+          subtitle: "QRoom",
+          headers: ["id", "name"],//Columns headers
+          rows: [["1","Javier"], ["2","Pedro"]] 
+        };
+
+        doc.table(table, {columnSize:[150,300]})
+
+
+
+        const buffer = [];
+        doc.on('data', buffer.push.bind(buffer));
+        doc.on('end', ()=>{
+          const data = Buffer.concat(buffer);
+          resolve(data);
+        })
+        doc.end();
+    })
+
+    return pdfBuffer;
   }
   
 }

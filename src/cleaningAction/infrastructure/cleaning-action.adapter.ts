@@ -86,87 +86,126 @@ export class CleaningActionAdapter implements ICleaningAction{
   }
 
   async exportPdf(): Promise<Buffer> {
+    try {
 
-    const pdfBuffer: Buffer = await new Promise( resolve => {
-      const doc = new PDFDocument(
-        {
-          size: "LETTER",
-          bufferPages: true,
-          autoFirstPage: false
-        })
-
-        let pageNumber = 0;
-        doc.on('pageAdded', ()=>{
-          pageNumber++;
-
-          if (pageNumber > 1){
-            doc.image(join(process.cwd(), "upload/logo.png"), doc.page.width - 100, 5, {fit: [45,45], align: 'center'})
-            doc.moveTo(50, 55)
-            .lineTo(doc.page.width - 50, 55)
-            .stroke(); 
+      //Get Cleaning Actions by Rooms
+      const rooms = await this.repoRoom.find({
+        relations: {
+          actions: {
+            hk_: true,
+            cleaning_type_: true,
+            sup_: true
           }
+        }
+      })
 
-          let bottom = doc.page.margins.bottom;
+      let actions_result;
+      for(let i = 0; i < rooms.length; i++){
+        actions_result = rooms[i].actions as unknown as Array<CleaningActionEntity>
+        if(!(actions_result.length > 0))
+          rooms.splice(i,1); 
+        }
 
-          doc.page.margins.bottom = 0
-          doc.text(
-            'Pag. '+pageNumber,
-            (doc.page.width - 100)/2,
-            doc.page.height - 50,
-            {
-              width: 100,
-              align: 'center',
-              lineBreak: false,
+      const pdfBuffer: Buffer = await new Promise( resolve => {
+        const doc = new PDFDocument(
+          {
+            size: "LETTER",
+            bufferPages: true,
+            autoFirstPage: false
+          })
+
+          let pageNumber = 0;
+          doc.on('pageAdded', ()=>{
+            pageNumber++;
+
+            if (pageNumber > 1){
+              doc.image(join(process.cwd(), "upload/logo.png"), doc.page.width - 100, 5, {fit: [45,45], align: 'center'})
+              doc.moveTo(50, 55)
+              .lineTo(doc.page.width - 50, 55)
+              .stroke(); 
             }
+
+            let bottom = doc.page.margins.bottom;
+
+            doc.font("Helvetica").fontSize(14);
+            doc.page.margins.bottom = 0
+            doc.text(
+              'Pag. '+pageNumber,
+              (doc.page.width - 100)/2,
+              doc.page.height - 50,
+              {
+                width: 100,
+                align: 'center',
+                lineBreak: false,
+              }
+            )
+
+            doc.page.margins.bottom = bottom;
+
+          }
           )
 
-          doc.page.margins.bottom = bottom;
+          doc.addPage();
+          doc.image(join(process.cwd(), "upload/logo.png"), doc.page.width/2 - 100, 150, {width: 200,})
+          doc.text('',0,400);
+          doc.font("Helvetica-Bold").fontSize(24);
+          doc.text("QRoom",{
+            width: doc.page.width,
+            align: 'center'
+          });
 
-        }
-        )
+          let type;
+          //ForEach room
+          for(let i = 0; i < rooms.length; i++)
+          {
+            let rows_tab: string [][] =[];
+            actions_result = rooms[i].actions as unknown as Array<CleaningActionEntity>
+            //ForEach action room
+            for (let y = 0; y<actions_result.length; y++) {
+              let date: string = actions_result[y].initial_time_hk.toString();
+              type = actions_result[y].cleaning_type_ as unknown as Array<CleaningTypeEntity>;
+              rows_tab.push([actions_result[y].initial_time_hk.toLocaleString(), type.name]);
+            }
+            
+            doc.addPage();
+            doc.text("",60,60)
+            doc.font("Helvetica").fontSize(12);
+            doc.text("Children's Hospital Los Angeles",{
+              align: 'center'
+            });
+            doc.font("Helvetica-Bold").fontSize(12);
+            doc.text("Operating or Procedure Room Terminal Cleaning Log",{
+              align: 'center'
+            });
 
-        doc.addPage();
-        doc.image(join(process.cwd(), "upload/logo.png"), doc.page.width/2 - 100, 150, {width: 200,})
-        doc.text('',0,400);
-        doc.font("Helvetica-Bold").fontSize(24);
-        doc.text("QRoom",{
-          width: doc.page.width,
-          align: 'center'
-        });
-
-        doc.addPage();
-        doc.text("",60,60)
-        doc.font("Helvetica").fontSize(12);
-        doc.text("Children's Hospital Los Angeles",{
-          align: 'center'
-        });
-        doc.font("Helvetica-Bold").fontSize(12);
-        doc.text("Operating or Procedure Room Terminal Cleaning Log",{
-          align: 'center'
-        });
-
-        //Create table
-        const table = {
-          title: "Cleaning",
-          subtitle: "QRoom",
-          headers: ["id", "name"],//Columns headers
-          rows: [["1","Javier"], ["2","Pedro"]] 
-        };
-
-        doc.table(table, {columnSize:[150,300]})
+            //Create table
+            const table = {
+              title: `Area: ${rooms[i].area}\nRoom: ${rooms[i].name}`,
+              subtitle: "EVS PERSONNEL",
+              headers: [{label:"Date Initial/time", property:"date", align: "left", headerAlign:"center", }, 
+              {label:"TC= Terminal Cleaning\nUv= UV Desinfection\nBL= Blocked (No Terminal Cleaning)", 
+              property:"type_cleaning", align: "left", headerAlign:"center", }],//Columns headers
+              rows: rows_tab
+            };
 
 
+            doc.table(table, {columnSize:[150,150]})
+      }
 
-        const buffer = [];
-        doc.on('data', buffer.push.bind(buffer));
-        doc.on('end', ()=>{
-          const data = Buffer.concat(buffer);
-          resolve(data);
-        })
-        doc.end();
-    })
+          const buffer = [];
+          doc.on('data', buffer.push.bind(buffer));
+          doc.on('end', ()=>{
+            const data = Buffer.concat(buffer);
+            resolve(data);
+          })
+          doc.end();
+      })
 
-    return pdfBuffer;
+      return pdfBuffer;
+    } catch (error) {
+      console.log(error);
+      return error
+    }
   }
   
 }

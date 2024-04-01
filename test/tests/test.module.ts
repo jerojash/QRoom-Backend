@@ -3,6 +3,7 @@ import { AppModule } from 'src/app.module';
 import { createUserService } from 'src/user/application/createUserService';
 import { UserModule } from 'src/user/infrastructure/user.module';
 import { userMotherObject } from './motherObject/userMotherObject';
+import { mockUser } from './mocks/mockUser';
 
 @Module({
     imports: [
@@ -10,7 +11,7 @@ import { userMotherObject } from './motherObject/userMotherObject';
         forwardRef(() => UserModule),
     ], // Import modules here
     providers: [
-        createUserService],
+        createUserService, userMotherObject, mockUser],
     exports: [userMotherObject],
 })
 export class TestModule { }

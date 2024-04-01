@@ -29,4 +29,16 @@ export class CreateUserDto {
     @IsString()
     @IsOptional()
     phone_number_1?: string
+
+    constructor(username: string, password: string, email: string, first_name: string,
+        last_name: string, code_area_1?: string, phone_number_1?: string){
+            this.username = username;
+            this.password = password;
+            this.email = email;
+            this.first_name = first_name;
+            this.last_name = last_name;
+            this.phone_number_1 = phone_number_1;
+            this.code_area_1 = code_area_1;
+
+    }
 }

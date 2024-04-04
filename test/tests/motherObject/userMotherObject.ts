@@ -16,6 +16,30 @@ export class userMotherObject {
             last_name, code_area_1, phone_number_1);
         return dto;
     }
+    public static createUserWithoutCodeAndPhone(): CreateUserDto {
+        let username = "jerojash";
+        let password = "123ClaveValida123*"
+        let email = "email@gmail.com";
+        let first_name = "Javier Eduardo";
+        let last_name = "Rojas Hernandez";
+        let code_area_1 = "+58";
+        let phone_number_1 = "4267653412";
+        const dto = new CreateUserDto(username, password, email, first_name,
+            last_name, code_area_1, phone_number_1);
+        return dto;
+    }
+    public static createUserWithEmailInvalid(): CreateUserDto {
+        let username = "jerojash";
+        let password = "123ClaveValida123*"
+        let email = "email@gmailcom";
+        let first_name = "Javier Eduardo";
+        let last_name = "Rojas Hernandez";
+        let code_area_1 = "+58";
+        let phone_number_1 = "4267653412";
+        const dto = new CreateUserDto(username, password, email, first_name,
+            last_name, code_area_1, phone_number_1);
+        return dto;
+    }
 
     public static createUserService(): createUserService<UserEntity> {
         const mock: mockUser = new mockUser();

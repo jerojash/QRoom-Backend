@@ -31,8 +31,15 @@ describe('UserController', () => {
         const moduleRef: TestingModule = await Test.createTestingModule({
             controllers: [UserController],
             providers: [adapterUserRepository, 
-                createUserService, 
-                getUserService,
+                createUserService,
+                { // <- otro proveedor
+                    provide: getUserService<{UserEntity}>,
+                    useValue: {
+                      execute: jest.fn().mockImplementation(() => {  // <- reemplazo el modelo con un mock
+                        return jest.fn(); // <- findOne necesita retornar el exec
+                      }),
+                    },
+                },
                 authService,]
         })
         .overrideProvider(adapterUserRepository) 
@@ -43,55 +50,32 @@ describe('UserController', () => {
         .useValue({ 
         createServiceMock: jest.fn(),
         })
-        .overrideProvider(getUserService) 
-        .useValue({ 
-        getUserServiceMock: {
-            execute: jest.fn((x)=>x)
-        },
-        })
+        // .overrideProvider(getUserService) 
+        // .useValue({
+        //         execute: jest.fn(),
+        // })
         .overrideProvider(authService) 
         .useValue({ 
         authMock: jest.fn(),
         })
         .compile();
 
-    // beforeEach(async () => {
-    //     const moduleRef = await Test.createTestingModule({
-    //       controllers: [UserController],
-    //     })
-    //     .useMocker((token) => {
-    //         const userTest = {
-    //             "id": "d96066a6-ff14-44d3-b8a2-63354616b467",
-    //             "username": "avct",
-    //             "password": "1234567",
-    //             "email": "avct@gmail.com",
-    //             "first_name": "Ashly",
-    //             "last_name": "de Rojas",
-    //             "code_area_1": "2344823",
-    //             "phone_number_1": "0058"
-    //         }
-    //         const results = [userTest];
-    //         if (token === adapterUserRepository) {
-    //             return { findAll: jest.fn().mockResolvedValue(results) };
-    //         }
-    //         if (typeof token === 'function') {
-    //             const mockMetadata = moduleMocker.getMetadata(token) as MockFunctionMetadata<any, any>;
-    //             const Mock = moduleMocker.generateFromMetadata(mockMetadata);
-    //             return new Mock();
-    //         }
-    //     }).compile();
-
-        getService = moduleRef.get(getUserService);
+        getService = moduleRef.get<getUserService<UserEntity>>(getUserService);
         controller = moduleRef.get(UserController);
     });
 
+    describe('Should', ()=>{
+        it('getUsers',async ()=>{
+            const result = Either.makeRight<Error, string[]>(['user1','user2'])
+            // console.log(getService.execute);
+            const spy = jest.spyOn(getService, 'execute')//.mockImplementation(async () => await result);
+    
+            await getService.execute();
+            expect(spy).toBeCalledTimes(1);
+            // expect(true).toBe(true);
+        });
+    })
 
-    it('getUsers',async ()=>{
-        // const result = Either.makeRight<Error, {}[]>([{},{}])
-        // console.log(getService);
-        // //jest.spyOn(getService, 'execute').mockImplementation(async () => await result);
 
-        // expect(await controller.findAll(responseMock)).toBe(result);
-        expect(true).toBe(true);
-    });
+    
 });

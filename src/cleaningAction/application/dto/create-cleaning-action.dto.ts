@@ -28,7 +28,12 @@ export class CreateCleaningActionDto {
     @IsString()
     @MinLength(1)
     // @IsDate()
-    public time?: string
+    public initial_time?: string
+
+    @IsString()
+    @MinLength(1)
+    // @IsDate()
+    public end_time?: string
 
 
 }

@@ -13,11 +13,12 @@ export class createActionService {
         let cleaningAction;
 
         if(dto.user_rol === 'HK') {
-            cleaningAction = CleaningAction.create(dto.id_room,dto.id_user,dto.id_cleaning_type,
-                dto.time);
+            cleaningAction = CleaningAction.create(dto.id_room, dto.id_user, 
+                dto.id_cleaning_type, dto.initial_time, dto.end_time);
         } else {
+            // TODO IMPROVE THIS IMPLEMENTATION
             cleaningAction = CleaningAction.create(dto.id_room,undefined, undefined, undefined,
-                dto.id_user, dto.time, dto.id_cleaning_action);
+                dto.id_user, dto.initial_time, dto.end_time, dto.id_cleaning_action);
         }
         
         let result = this.CleaningActionRepository.createCleaningAction(cleaningAction);

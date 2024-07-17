@@ -32,6 +32,11 @@ export class CleaningActionEntity extends BaseEntity{
     })
     initial_time_hk: string|null;
 
+    @Column('timestamp',{
+        nullable: true
+    })
+    end_time_hk: string|null;
+
     @ManyToOne(
         ()=>UserEntity,
         (user_sup) => user_sup.actions_sup
@@ -43,4 +48,8 @@ export class CleaningActionEntity extends BaseEntity{
     })
     initial_time_sup: string|null
 
+    @Column('timestamp',{
+        nullable: true
+    })
+    end_time_sup: string|null;
 }

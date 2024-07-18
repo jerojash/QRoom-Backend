@@ -8,7 +8,7 @@ export class CleaningCheck {
         private name: CleaningCheckName,
         private description: CleaningCheckDescription,
         private id_cleaning_type: CleaningTypeId,
-        private id_sub_task?: CleaningCheckId,
+        private id_parent_task?: CleaningCheckId,
         private id?: CleaningCheckId
         
     ){}
@@ -29,8 +29,8 @@ export class CleaningCheck {
         return this.id;
     }
 
-    getSubTaskId(): CleaningCheckId {
-        return this.id_sub_task;
+    getParentTaskId(): CleaningCheckId {
+        return this.id_parent_task;
     }
 
     static create(name: string, description: string, 

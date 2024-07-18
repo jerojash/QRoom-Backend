@@ -10,7 +10,8 @@ export class createCleaningCheckService<T>{
     }
     async execute(dto: CreateCleaningCheckDto ): Promise<Either<Error,T>>{
 
-        const cleaningCheck = CleaningCheck.create(dto.name, dto.description, dto.type_id);
+        const cleaningCheck = CleaningCheck.create(dto.name, dto.description, 
+            dto.type_id, dto.id_parent_task);
 
         let result = this.CleaningCheckRepository.createCleaningCheck(cleaningCheck);
         return result

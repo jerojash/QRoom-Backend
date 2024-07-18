@@ -39,9 +39,7 @@ export class cleaningTypeAdapter implements ICleaningType<CleaningTypeEntity> {
     
     try {
       let result = await this.repository.find({
-        relations:{
-          check: true
-        }
+        relations:['check', 'check.sub_task', 'check.sub_task.sub_task']
       });
       return Either.makeRight<Error, CleaningTypeEntity[]>(result)
     } catch (error) {

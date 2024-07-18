@@ -1,4 +1,4 @@
-import { IsString, IsUUID, MinLength } from "class-validator";
+import { IsOptional, IsString, IsUUID, MinLength } from "class-validator";
 
 export class CreateCleaningCheckDto {
 
@@ -16,4 +16,7 @@ export class CreateCleaningCheckDto {
     @IsUUID()
     public type_id: string
 
+    @IsOptional()
+    @IsUUID()
+    public id_parent_task?: string
 }

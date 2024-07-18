@@ -1,8 +1,9 @@
 import { CleaningTypeEntity } from "src/cleaningType/infrastructure/entities/cleaning-type.entity";
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent } from "typeorm";
 
 
 @Entity({ name: 'cleaning_check' })
+@Tree("materialized-path")
 export class CleaningCheckEntity extends BaseEntity{
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -14,6 +15,12 @@ export class CleaningCheckEntity extends BaseEntity{
 
     @Column('text')
     description: string;
+
+    @TreeChildren({cascade: true})
+    sub_task: CleaningCheckEntity[]
+
+    @TreeParent()
+    parent_check: CleaningCheckEntity
 
     @ManyToOne(
         ()=>CleaningTypeEntity,

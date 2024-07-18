@@ -13,9 +13,6 @@ export class CleaningTypeEntity extends BaseEntity{
     })
     name: string;
 
-    @Column('text')
-    description: string;
-
     @OneToMany(
         ()=>CleaningCheckEntity,
         cleaningCheckEntity => cleaningCheckEntity.type

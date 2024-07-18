@@ -10,7 +10,7 @@ export class createCleaningTypeService<T>{
     }
     async execute(dto: CreateCleaningTypeDto ): Promise<Either<Error,T>>{
 
-        const cleaningType = CleaningType.create(dto.name, dto.description);
+        const cleaningType = CleaningType.create(dto.name);
 
         let result = this.CleaningTypeRepository.createCleaningType(cleaningType);
         return result

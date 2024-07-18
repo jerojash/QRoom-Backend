@@ -21,7 +21,6 @@ export class cleaningTypeAdapter implements ICleaningType<CleaningTypeEntity> {
     const cleaningTypeToCreate = CleaningTypeEntity.create();
     cleaningTypeToCreate.id = cleaningType.getId().getId();
     cleaningTypeToCreate.name = cleaningType.getName().getName();
-    cleaningTypeToCreate.description = cleaningType.getDescription().getDescription();
 
     try {
       const result = await this.repository.save(cleaningTypeToCreate);

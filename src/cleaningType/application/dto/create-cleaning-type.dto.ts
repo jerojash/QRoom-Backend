@@ -6,8 +6,4 @@ export class CreateCleaningTypeDto {
     @MinLength(1)
     public name: string 
 
-    @IsString()
-    @MinLength(1)
-    public description: string 
-
 }

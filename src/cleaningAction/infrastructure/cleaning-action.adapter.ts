@@ -51,6 +51,7 @@ export class CleaningActionAdapter implements ICleaningAction{
         cleaningActionToCreate.hk_ = user;
 
         cleaningActionToCreate.initial_time_hk = action.getCleaningInitTimeHk().getTime();
+        cleaningActionToCreate.end_time_hk = action.getCleaningEndTimeHk().getTime();
         
         let cleaning_type  = await this.repoType.findOne({
           where: {

@@ -41,7 +41,18 @@ export class RoomController {
     let result =  await this.getRoomById.execute(id.toString(), rol.toString());
 
     if (result.isLeft()) {
-      return res.status(HttpStatus.CONFLICT).json(result.getLeft().message);
+      switch(result.getLeft().message) { 
+        case '403': { 
+           return res.status(HttpStatus.FORBIDDEN).json('FORBIDDEN');  
+        } 
+        case '404': { 
+          return res.status(HttpStatus.NOT_FOUND).json('ROOM NOT FOUND');  
+       } 
+        default: { 
+          return res.status(HttpStatus.BAD_REQUEST).json('BAD REQUEST');  
+       } 
+     }  
+      
     }else{
       return res.status(HttpStatus.OK).json(result.getRight());
     }

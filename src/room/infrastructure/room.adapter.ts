@@ -7,6 +7,7 @@ import { RoomEntity } from './entities/room.entity';
 import { Repository } from 'typeorm';
 import { PermissionsEntity } from 'src/permissions/infrastructure/entities/permission.entity';
 import { RolEntity } from 'src/rol/infrastructure/entities/rol.entity';
+import { validate as isValidUUID } from 'uuid';
 
 @Injectable()
 export class adapterRoomRepository implements IRoom<RoomEntity> {
@@ -53,12 +54,15 @@ export class adapterRoomRepository implements IRoom<RoomEntity> {
 
    async getRoomById(id: string, userRol: string): Promise<Either<Error, RoomEntity>> {
     try {
+      if (!isValidUUID(id))
+        return Either.makeLeft<Error,RoomEntity>(new Error('Not UUID'));
+      
       const rolUser = await this.repoRol.findOne({
         where: {
           name: userRol
         }
       })
-      if(!rolUser) return Either.makeLeft<Error,RoomEntity>(new Error('Rol not found'));
+      if(!rolUser) return Either.makeLeft<Error,RoomEntity>(new Error('403'));
 
       let result = await this.repository.findOne({
         where: {
@@ -66,7 +70,7 @@ export class adapterRoomRepository implements IRoom<RoomEntity> {
         }
       })
   
-      if (!result) return Either.makeLeft<Error,RoomEntity>(new Error('Room not found'));
+      if (!result) return Either.makeLeft<Error,RoomEntity>(new Error('404'));
 
       const permission = await this.repoPermissions.findOne({
         where : {
@@ -74,7 +78,7 @@ export class adapterRoomRepository implements IRoom<RoomEntity> {
           room: result
         }
       })
-      if(!permission) return Either.makeLeft<Error,RoomEntity>(new Error('Forbidden'));
+      if(!permission) return Either.makeLeft<Error,RoomEntity>(new Error('403'));
  
       return Either.makeRight<Error,RoomEntity>(result);
     } catch (error) {

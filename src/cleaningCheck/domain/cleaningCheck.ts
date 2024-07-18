@@ -1,12 +1,12 @@
-import { CleaningTypeId } from "src/cleaningType/domain/valueObjects/CleaningTypeId";
-import { CleaningCheckDescription } from "./valueObjects/CleaningCheckDescription";
+
 import { CleaningCheckId } from "./valueObjects/CleaningCheckId";
 import { CleaningCheckName } from "./valueObjects/CleaningCheckName";
+import { CleaningTypeId } from "./valueObjects/CleaningTypeId";
 
 export class CleaningCheck {
     constructor(
         private name: CleaningCheckName,
-        private id_cleaning_type: CleaningTypeId,
+        private id_cleaning_type?: CleaningTypeId,
         private id_parent_task?: CleaningCheckId,
         private id?: CleaningCheckId
         

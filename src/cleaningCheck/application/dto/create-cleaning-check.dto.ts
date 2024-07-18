@@ -6,8 +6,7 @@ export class CreateCleaningCheckDto {
     @MinLength(1)
     public name: string 
 
-    @IsString()
-    @MinLength(1)
+    @IsOptional()
     @IsUUID()
     public type_id: string
 

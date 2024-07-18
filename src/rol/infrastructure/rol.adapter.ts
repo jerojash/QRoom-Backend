@@ -11,7 +11,7 @@ export class adapterRolRepository implements IRol<RolEntity>{
     constructor(
         @InjectRepository(RolEntity)
         private readonly repository: Repository<RolEntity>
-      ) {}
+    ) {}
 
     async createRol(rol: Rol): Promise<Either<Error, RolEntity>>{
         const rolToCreate = RolEntity.create()

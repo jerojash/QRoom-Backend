@@ -27,14 +27,16 @@ export class cleaningCheckAdapter implements ICleaningCheck<CleaningCheckEntity>
     const idType = cleaningCheck.getTypeId().getId();
     const idCheck = cleaningCheck.getParentTaskId().getId();
     try {
-      const cleaningType = await this.repositoryType.findOne({
-        where:{
-          id: idType
-        }
-      })
-      // Validate if cleaning-type exists
-      if (!cleaningType) return Either.makeLeft<Error, CleaningCheckEntity>(new Error('CleaningType not found'));
-      cleaningCheckToCreate.type = cleaningType;
+      if(idType) {
+        const cleaningType = await this.repositoryType.findOne({
+          where:{
+            id: idType
+          }
+        })
+        // Validate if cleaning-type exists
+        if (!cleaningType) return Either.makeLeft<Error, CleaningCheckEntity>(new Error('CleaningType not found'));
+        cleaningCheckToCreate.type = cleaningType;
+      }
 
       //Validate if parent cleaningCheck exists
       if(idCheck){

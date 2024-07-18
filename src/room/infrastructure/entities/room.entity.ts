@@ -1,4 +1,5 @@
 import { CleaningActionEntity } from "src/cleaningAction/infrastructure/entities/cleaning-action.entity";
+import { PermissionsEntity } from "src/permissions/infrastructure/entities/permission.entity";
 import { RolEntity } from "src/rol/infrastructure/entities/rol.entity";
 import { BaseEntity, Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
@@ -18,5 +19,11 @@ export class RoomEntity extends BaseEntity {
         cleaningActionEntity => cleaningActionEntity.room_
     )
     actions: CleaningActionEntity
+
+    @OneToMany(
+        ()=>PermissionsEntity,
+        permissionsEntity => permissionsEntity.room
+    )
+    permissions: PermissionsEntity[]
 
 }

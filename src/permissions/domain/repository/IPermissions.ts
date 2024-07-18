@@ -2,7 +2,7 @@ import { Either } from "../../../generics/Either";
 import { Permissions } from "../Permissions";
 
 
-export interface IPermissions<T>{
-   createPermissions(permissions: Permissions): Promise<Either<Error, T>>
+export interface IPermissions{
+   createPermissions(permissions: Permissions): Promise<Either<Error, string>>
    // getPermissions(): Promise<Either<Error, T[]>>
 }

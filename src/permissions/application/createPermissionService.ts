@@ -3,12 +3,12 @@ import { IPermissions } from "../domain/repository/IPermissions";
 import { CreatePermissionDto } from "./dto/create-permission.dto";
 import { Permissions } from "../domain/Permissions";
 
-export class createPermissionsService<T>{
-    private PermissionsRepository: IPermissions<T>;
-    constructor(repo: IPermissions<T>) {
+export class CreatePermissionsService{
+    private PermissionsRepository: IPermissions;
+    constructor(repo: IPermissions) {
         this.PermissionsRepository = repo;
     }
-    async execute(dto: CreatePermissionDto): Promise<Either<Error,T>>{
+    async execute(dto: CreatePermissionDto): Promise<Either<Error,string>>{
 
         const permissions = Permissions.create(dto.id_room, dto.id_rol)
 

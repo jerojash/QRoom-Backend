@@ -1,3 +1,4 @@
+import { PermissionsEntity } from "src/permissions/infrastructure/entities/permission.entity";
 import { RoomEntity } from "src/room/infrastructure/entities/room.entity";
 import { UserEntity } from "src/user/infrastructure/entities/user.entity";
 import { BaseEntity, Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
@@ -18,10 +19,10 @@ export class RolEntity extends BaseEntity{
     )
     users: UserEntity
 
-    @ManyToMany(()=>RoomEntity)
-    @JoinTable({
-        name: "permissions",
-      })
-    rooms: RoomEntity[]
+    @OneToMany(
+        ()=>PermissionsEntity,
+        permissionsEntity => permissionsEntity.rol
+    )
+    permissions: PermissionsEntity[]
 
 }

@@ -7,6 +7,7 @@ import { createRoomService } from '../application/createRoomService';
 import { getRoomByIdService } from '../application/getRoomByIdService';
 import { getRoomsService } from '../application/getRoomService';
 import { CleaningActionEntity } from 'src/cleaningAction/infrastructure/entities/cleaning-action.entity';
+import { PermissionsEntity } from 'src/permissions/infrastructure/entities/permission.entity';
 
 @Module({
   controllers: [RoomController],
@@ -14,7 +15,8 @@ import { CleaningActionEntity } from 'src/cleaningAction/infrastructure/entities
     getRoomByIdService, getRoomsService],
   imports:[
     TypeOrmModule.forFeature([RoomEntity]),
-    TypeOrmModule.forFeature([CleaningActionEntity])
+    TypeOrmModule.forFeature([CleaningActionEntity]),
+    TypeOrmModule.forFeature([PermissionsEntity])
   ]
 })
 export class RoomModule {}

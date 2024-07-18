@@ -1,5 +1,6 @@
 import { CleaningActionEntity } from "src/cleaningAction/infrastructure/entities/cleaning-action.entity";
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { RolEntity } from "src/rol/infrastructure/entities/rol.entity";
+import { BaseEntity, Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name:'room'})
 export class RoomEntity extends BaseEntity {
@@ -17,4 +18,5 @@ export class RoomEntity extends BaseEntity {
         cleaningActionEntity => cleaningActionEntity.room_
     )
     actions: CleaningActionEntity
+
 }

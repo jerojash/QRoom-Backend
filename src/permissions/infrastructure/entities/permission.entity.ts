@@ -15,11 +15,11 @@ export class PermissionsEntity extends BaseEntity{
     // public id_room: string
 
     @ManyToOne(() => RolEntity, rol => rol.permissions)
-    public rol?: RolEntity
+    public rol: RolEntity
 
     @ManyToOne(() => RoomEntity, room => room.permissions)
-    public room?: RoomEntity
+    public room: RoomEntity
 
     @ManyToOne(() => CleaningTypeEntity, type => type.permissions)
-    public cleaningType?: CleaningTypeEntity
+    public cleaningType: CleaningTypeEntity
 }

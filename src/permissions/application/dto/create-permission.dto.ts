@@ -9,11 +9,11 @@ export class CreatePermissionDto {
 
     @IsString()
     @IsUUID()
-    @IsOptional()
+    @MinLength(1)
     public id_room: string 
 
     @IsString()
     @IsUUID()
-    @IsOptional()
+    @MinLength(1)
     public id_cleaning_type: string 
 }

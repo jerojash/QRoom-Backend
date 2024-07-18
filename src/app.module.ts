@@ -7,6 +7,7 @@ import { RoomModule } from './room/infrastructure/room.module';
 import { CleaningTypeModule } from './cleaningType/infrastructure/cleaning-type.module';
 import { CleaningCheckModule } from './cleaningCheck/infrastructure/cleaning-check.module';
 import { CleaningActionModule } from './cleaningAction/infrastructure/cleaning-action.module';
+import { PermissionsModule } from './permissions/infrastructure/permissions.module';
 
 @Module({
   imports: [UserModule, RolModule, RoomModule, CleaningTypeModule,
@@ -23,6 +24,8 @@ import { CleaningActionModule } from './cleaningAction/infrastructure/cleaning-a
       autoLoadEntities: true,
       synchronize: true
     }),
+
+    PermissionsModule,
   ],
 })
 export class AppModule {}

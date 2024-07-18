@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PermissionsEntity } from './entities/permission.entity';
 import { RoomEntity } from 'src/room/infrastructure/entities/room.entity';
 import { RolEntity } from 'src/rol/infrastructure/entities/rol.entity';
+import { CleaningTypeEntity } from 'src/cleaningType/infrastructure/entities/cleaning-type.entity';
 
 @Module({
   controllers: [PermissionsController],
@@ -14,6 +15,7 @@ import { RolEntity } from 'src/rol/infrastructure/entities/rol.entity';
     TypeOrmModule.forFeature([PermissionsEntity]),
     TypeOrmModule.forFeature([RoomEntity]),
     TypeOrmModule.forFeature([RolEntity]),
+    TypeOrmModule.forFeature([CleaningTypeEntity])
   ]
 })
 export class PermissionsModule {}

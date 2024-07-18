@@ -1,4 +1,4 @@
-import { IsString, IsUUID, MinLength } from "class-validator";
+import { IsOptional, IsString, IsUUID, MinLength } from "class-validator";
 
 export class CreatePermissionDto {
 
@@ -9,6 +9,11 @@ export class CreatePermissionDto {
 
     @IsString()
     @IsUUID()
-    @MinLength(1)
+    @IsOptional()
     public id_room: string 
+
+    @IsString()
+    @IsUUID()
+    @IsOptional()
+    public id_cleaning_type: string 
 }

@@ -1,3 +1,4 @@
+import { CleaningTypeEntity } from "src/cleaningType/infrastructure/entities/cleaning-type.entity";
 import { RolEntity } from "src/rol/infrastructure/entities/rol.entity";
 import { RoomEntity } from "src/room/infrastructure/entities/room.entity";
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
@@ -14,8 +15,11 @@ export class PermissionsEntity extends BaseEntity{
     // public id_room: string
 
     @ManyToOne(() => RolEntity, rol => rol.permissions)
-    public rol: RolEntity
+    public rol?: RolEntity
 
     @ManyToOne(() => RoomEntity, room => room.permissions)
-    public room: RoomEntity
+    public room?: RoomEntity
+
+    @ManyToOne(() => CleaningTypeEntity, type => type.permissions)
+    public cleaningType?: CleaningTypeEntity
 }

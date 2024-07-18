@@ -1,5 +1,6 @@
 import { CleaningActionEntity } from "src/cleaningAction/infrastructure/entities/cleaning-action.entity";
 import { CleaningCheckEntity } from "src/cleaningCheck/infrastructure/entities/cleaning-check.entity";
+import { PermissionsEntity } from "src/permissions/infrastructure/entities/permission.entity";
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 
@@ -24,5 +25,11 @@ export class CleaningTypeEntity extends BaseEntity{
         cleaningActionEntity => cleaningActionEntity.cleaning_type_
     )
     actions: CleaningActionEntity;
+
+    @OneToMany(
+        ()=>PermissionsEntity,
+        permissionsEntity => permissionsEntity.cleaningType
+    )
+    permissions: PermissionsEntity[]
 
 }

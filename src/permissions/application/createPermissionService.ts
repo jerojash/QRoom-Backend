@@ -10,7 +10,10 @@ export class CreatePermissionsService{
     }
     async execute(dto: CreatePermissionDto): Promise<Either<Error,string>>{
 
-        const permissions = Permissions.create(dto.id_room, dto.id_rol)
+        const permissions = Permissions.create
+            (dto.id_rol, 
+            dto.id_cleaning_type, 
+            dto.id_room)
 
         let result = this.PermissionsRepository.createPermissions(permissions.getRight());
         return result

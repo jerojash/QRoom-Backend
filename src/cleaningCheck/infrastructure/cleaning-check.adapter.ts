@@ -33,12 +33,10 @@ export class cleaningCheckAdapter implements ICleaningCheck<CleaningCheckEntity>
             id: idType
           }
         })
-        console.log('Cleaning type', typeof cleaningType);
         // Validate if cleaning-type exists
         if (!cleaningType) return Either.makeLeft<Error, CleaningCheckEntity>(new Error('CleaningType not found'));
         cleaningCheckToCreate.type = cleaningType;
       }
-
       //Validate if parent cleaningCheck exists
       if(idCheck){
         const parentCheck = await this.repository.findOne({

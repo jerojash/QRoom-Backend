@@ -6,7 +6,7 @@ export class getRoomByIdService <T> {
     constructor(repo: IRoom<T>) {
         this.RoomRepository = repo;
     }
-    async execute(id: string): Promise<Either<Error,T>>{
-        return this.RoomRepository.getRoomById(id)
+    async execute(id: string, userRol: string): Promise<Either<Error,T>>{
+        return this.RoomRepository.getRoomById(id, userRol)
     }
 }

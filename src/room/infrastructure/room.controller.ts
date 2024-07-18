@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Response, ParseUUIDPipe, HttpStatus } from '@nestjs/common';
 import { adapterRoomRepository } from './room.adapter';
 import { CreateRoomDto } from '../application/dto/create-room.dto';
 import { UpdateRoomDto } from '../application/dto/update-room.dto';
@@ -34,12 +34,17 @@ export class RoomController {
     return result.getRight();
   }
 
-  @Get(':id')
-  async findOne(@Param('id', ParseUUIDPipe) id: string) {
-    let result =  await this.getRoomById.execute(id.toString());
+  @Get(':id/:rol')
+  async findOne(@Response() res,
+                @Param('id', ParseUUIDPipe) id: string, 
+                @Param('rol') rol: string) {
+    let result =  await this.getRoomById.execute(id.toString(), rol.toString());
 
-    if (result.isLeft()) return result.getLeft();
-    return result.getRight();
+    if (result.isLeft()) {
+      return res.status(HttpStatus.CONFLICT).json(result.getLeft().message);
+    }else{
+      return res.status(HttpStatus.OK).json(result.getRight());
+    }
   }
 
   // @Patch(':id')

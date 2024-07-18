@@ -5,12 +5,18 @@ import { Room } from '../domain/room';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoomEntity } from './entities/room.entity';
 import { Repository } from 'typeorm';
+import { PermissionsEntity } from 'src/permissions/infrastructure/entities/permission.entity';
+import { RolEntity } from 'src/rol/infrastructure/entities/rol.entity';
 
 @Injectable()
 export class adapterRoomRepository implements IRoom<RoomEntity> {
   constructor(
     @InjectRepository(RoomEntity)
-    private readonly repository: Repository<RoomEntity>
+    private readonly repository: Repository<RoomEntity>,
+    @InjectRepository(PermissionsEntity)
+    private readonly repoPermissions: Repository<PermissionsEntity>,
+    @InjectRepository(RolEntity)
+    private readonly repoRol: Repository<RolEntity>
   ) {}
 
    async createRoom(room: Room): Promise<Either<Error, RoomEntity>> {
@@ -45,16 +51,32 @@ export class adapterRoomRepository implements IRoom<RoomEntity> {
   }
   
 
-   async getRoomById(id: string): Promise<Either<Error, RoomEntity>> {
+   async getRoomById(id: string, userRol: string): Promise<Either<Error, RoomEntity>> {
     try {
+      const rolUser = await this.repoRol.findOne({
+        where: {
+          name: userRol
+        }
+      })
+      if(!rolUser) return Either.makeLeft<Error,RoomEntity>(new Error('Rol not found'));
+
       let result = await this.repository.findOne({
         where: {
           id:id
         }
       })
   
-      if (result) return Either.makeRight<Error,RoomEntity>(result);
-      return Either.makeLeft<Error,RoomEntity>(new Error('Room not found'));
+      if (!result) return Either.makeLeft<Error,RoomEntity>(new Error('Room not found'));
+
+      const permission = await this.repoPermissions.findOne({
+        where : {
+          rol: rolUser,
+          room: result
+        }
+      })
+      if(!permission) return Either.makeLeft<Error,RoomEntity>(new Error('Forbidden'));
+ 
+      return Either.makeRight<Error,RoomEntity>(result);
     } catch (error) {
         console.log(error);
         return Either.makeLeft<Error, RoomEntity>(error);

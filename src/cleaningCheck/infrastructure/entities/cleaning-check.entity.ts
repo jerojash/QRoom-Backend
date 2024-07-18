@@ -13,9 +13,6 @@ export class CleaningCheckEntity extends BaseEntity{
     })
     name: string;
 
-    @Column('text')
-    description: string;
-
     @TreeChildren({cascade: true})
     sub_task: CleaningCheckEntity[]
 

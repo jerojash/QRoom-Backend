@@ -8,9 +8,7 @@ export class CleaningCheckEntity extends BaseEntity{
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column('text',{
-        unique: true
-    })
+    @Column('text')
     name: string;
 
     @TreeChildren({cascade: true})

@@ -7,6 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { getCleaningTypeService } from '../application/getCleaningTypeService';
 import { CleaningCheckEntity } from 'src/cleaningCheck/infrastructure/entities/cleaning-check.entity';
 import { PermissionsEntity } from 'src/permissions/infrastructure/entities/permission.entity';
+import { RolEntity } from 'src/rol/infrastructure/entities/rol.entity';
+import { RoomEntity } from 'src/room/infrastructure/entities/room.entity';
 
 @Module({
   controllers: [CleaningTypeController],
@@ -15,7 +17,9 @@ import { PermissionsEntity } from 'src/permissions/infrastructure/entities/permi
   imports:[
     TypeOrmModule.forFeature([CleaningTypeEntity]),
     TypeOrmModule.forFeature([CleaningCheckEntity]),
-    TypeOrmModule.forFeature([PermissionsEntity])
+    TypeOrmModule.forFeature([PermissionsEntity]),
+    TypeOrmModule.forFeature([RolEntity]),
+    TypeOrmModule.forFeature([RoomEntity])
   ]
 })
 export class CleaningTypeModule {}

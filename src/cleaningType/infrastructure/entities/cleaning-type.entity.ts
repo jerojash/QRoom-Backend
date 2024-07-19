@@ -1,7 +1,7 @@
 import { CleaningActionEntity } from "src/cleaningAction/infrastructure/entities/cleaning-action.entity";
 import { CleaningCheckEntity } from "src/cleaningCheck/infrastructure/entities/cleaning-check.entity";
 import { PermissionsEntity } from "src/permissions/infrastructure/entities/permission.entity";
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, IsNull, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity({ name: 'cleaning_type' })
@@ -9,10 +9,13 @@ export class CleaningTypeEntity extends BaseEntity{
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column('text',{
-        unique: true
-    })
+    @Column('text')
     name: string;
+
+    @Column('text', {
+        nullable: true
+    })
+    id_room?: string | null;
 
     @OneToMany(
         ()=>CleaningCheckEntity,

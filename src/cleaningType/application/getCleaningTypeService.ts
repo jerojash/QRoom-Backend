@@ -6,7 +6,7 @@ export class getCleaningTypeService<T> {
     constructor(repo: ICleaningType<T>){
         this.cleaningTypeRepository = repo
     }
-    async execute(): Promise<Either<Error,T[]>>{
-        return this.cleaningTypeRepository.getCleaningType();
+    async execute(idRoom: string, userRol: string): Promise<Either<Error,T[]>>{
+        return this.cleaningTypeRepository.getCleaningType(idRoom, userRol);
     }
 }

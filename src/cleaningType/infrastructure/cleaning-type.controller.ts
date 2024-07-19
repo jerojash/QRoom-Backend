@@ -1,4 +1,4 @@
-import { Response, Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus } from '@nestjs/common';
+import { Response, Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, ParseUUIDPipe } from '@nestjs/common';
 import { cleaningTypeAdapter } from './cleaning-type.adapter';
 import { CreateCleaningTypeDto } from '../application/dto/create-cleaning-type.dto';
 import { UpdateCleaningTypeDto } from '../application/dto/update-cleaning-type.dto';
@@ -27,9 +27,11 @@ export class CleaningTypeController {
     }
   }
 
-  @Get()
-  async findAll(@Response() res) {
-    let result = await this.getCleaningService.execute();
+  @Get(':idRoom/:userRol')
+  async findAll(@Response() res,
+                @Param('idRoom', ParseUUIDPipe) idRoom: string, 
+                @Param('userRol') userRol: string) {
+    let result = await this.getCleaningService.execute(idRoom, userRol);
 
     if (result.isLeft()) {
       return res.status(HttpStatus.CONFLICT).json(result.getLeft().message);

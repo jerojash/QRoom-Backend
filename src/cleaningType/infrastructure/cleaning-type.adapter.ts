@@ -144,7 +144,10 @@ export class cleaningTypeAdapter implements ICleaningType<CleaningTypeEntity> {
     console.log('TYPES without room: ', cleaningTypesWithoutRoom);
     
     let cleaningTypes
-    if (cleaningTypeWithRoom.length > 0) cleaningTypes = cleaningTypeWithRoom
+    if (cleaningTypeWithRoom.length > 0) {
+      console.log('ENTRO AL IF');
+      cleaningTypes = cleaningTypeWithRoom
+    }
     else  { console.log('ENTRO AL ELSE');
       cleaningTypes = cleaningTypesWithoutRoom
     }

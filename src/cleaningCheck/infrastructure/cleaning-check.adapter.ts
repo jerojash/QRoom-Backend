@@ -24,6 +24,7 @@ export class cleaningCheckAdapter implements ICleaningCheck<CleaningCheckEntity>
     const cleaningCheckToCreate = CleaningCheckEntity.create();
     cleaningCheckToCreate.id = cleaningCheck.getId().getId();
     cleaningCheckToCreate.name = cleaningCheck.getName().getName();
+    cleaningCheckToCreate.created_at= new Date();
     const idType = cleaningCheck.getTypeId().getId();
     const idCheck = cleaningCheck.getParentTaskId().getId();
     try {

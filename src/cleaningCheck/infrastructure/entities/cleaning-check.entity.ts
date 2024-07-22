@@ -11,6 +11,11 @@ export class CleaningCheckEntity extends BaseEntity{
     @Column('text')
     name: string;
 
+    @Column('timestamp',{
+        nullable: true
+    })
+    created_at: Date|null;
+
     @TreeChildren({cascade: true})
     sub_task: CleaningCheckEntity[]
 

@@ -17,6 +17,11 @@ export class CleaningTypeEntity extends BaseEntity{
     })
     id_room?: string | null;
 
+    @Column('timestamp',{
+        nullable: true
+    })
+    created_at: Date|null;
+
     @OneToMany(
         ()=>CleaningCheckEntity,
         cleaningCheckEntity => cleaningCheckEntity.type

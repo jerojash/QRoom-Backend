@@ -31,6 +31,7 @@ export class cleaningTypeAdapter implements ICleaningType<CleaningTypeEntity> {
     cleaningTypeToCreate.id = cleaningType.getId().getId();
     cleaningTypeToCreate.name = cleaningType.getName().getName();
     cleaningTypeToCreate.id_room = cleaningType.getIdRoom().getIdRoom();
+    cleaningTypeToCreate.created_at = new Date();
 
     try {
       const result = await this.repository.save(cleaningTypeToCreate);
@@ -69,7 +70,35 @@ export class cleaningTypeAdapter implements ICleaningType<CleaningTypeEntity> {
       // });
 
       const cleaningTypes = await this.repository.find({
-        relations: ['check', 'check.sub_task', 'check.sub_task.sub_task'],
+        select : {
+          id: true,
+          name: true,
+          check: {  
+            id: true,
+            name: true,
+            sub_task: {
+              id: true,
+              name: true,
+              sub_task: {
+                id: true,
+                name: true,
+              }
+            }
+          },
+      },
+      order: {
+        created_at: 'ASC',
+        check: {
+          created_at: 'ASC',
+          sub_task: {
+            created_at: 'ASC',
+            sub_task: {
+              created_at: 'ASC',
+            }
+          }
+        }
+      },
+        relations: ['check', 'check.sub_task', 'check.sub_task.sub_task']
       });
 
       console.log('TYPES: ', cleaningTypes);

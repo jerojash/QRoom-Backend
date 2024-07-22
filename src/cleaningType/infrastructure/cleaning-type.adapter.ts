@@ -166,9 +166,9 @@ export class cleaningTypeAdapter implements ICleaningType<CleaningTypeEntity> {
   
       // Filtrar las entidades CleaningType que están en Permissions
       const allowedCleaningTypeIds = permissions.map(permission => permission.cleaningType.id);
-      // console.log('ALLOWED: ', allowedCleaningTypeIds);
+      console.log('ALLOWED: ', allowedCleaningTypeIds);
       const result = cleaningTypes.filter(cleaningType => allowedCleaningTypeIds.includes(cleaningType.id));
-      // console.log('RESULT: ', result);
+      console.log('RESULT: ', result);
       return Either.makeRight<Error, CleaningTypeEntity[]>(result)
     } catch (error) {
       console.log(error);

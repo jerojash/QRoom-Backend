@@ -4,7 +4,7 @@ import { UpdateCleaningTypeDto } from '../application/dto/update-cleaning-type.d
 import { ICleaningType } from '../domain/repository/ICleaningType';
 import { CleaningTypeEntity } from './entities/cleaning-type.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, Repository } from 'typeorm';
+import { FindManyOptions, IsNull, Repository } from 'typeorm';
 import { Either } from 'src/generics/Either';
 import { CleaningType } from '../domain/cleaningType';
 import { RolEntity } from 'src/rol/infrastructure/entities/rol.entity';
@@ -69,7 +69,7 @@ export class cleaningTypeAdapter implements ICleaningType<CleaningTypeEntity> {
       //   relations:['check', 'check.sub_task', 'check.sub_task.sub_task']
       // });
 
-      const cleaningTypes = await this.repository.find({
+      const cleaningTypeWithRoom = await this.repository.find({
         select : {
           id: true,
           name: true,
@@ -85,28 +85,71 @@ export class cleaningTypeAdapter implements ICleaningType<CleaningTypeEntity> {
               }
             }
           },
-      },
-      order: {
-        created_at: 'ASC',
-        check: {
+        },
+        order: {
           created_at: 'ASC',
-          sub_task: {
+          check: {
             created_at: 'ASC',
             sub_task: {
               created_at: 'ASC',
+              sub_task: {
+                created_at: 'ASC',
+              }
             }
           }
+        },
+          relations: ['check', 'check.sub_task', 'check.sub_task.sub_task'],
+        where : {
+          id_room: idRoom
         }
-      },
-        relations: ['check', 'check.sub_task', 'check.sub_task.sub_task']
       });
 
-      console.log('TYPES: ', cleaningTypes);
+      console.log('TYPES with room: ', cleaningTypeWithRoom);
+
+      const cleaningTypesWithoutRoom = await this.repository.find({
+        select : {
+          id: true,
+          name: true,
+          check: {  
+            id: true,
+            name: true,
+            sub_task: {
+              id: true,
+              name: true,
+              sub_task: {
+                id: true,
+                name: true,
+              }
+            }
+          },
+        },
+        order: {
+          created_at: 'ASC',
+          check: {
+            created_at: 'ASC',
+            sub_task: {
+              created_at: 'ASC',
+              sub_task: {
+                created_at: 'ASC',
+              }
+            }
+          }
+        },
+          relations: ['check', 'check.sub_task', 'check.sub_task.sub_task'],
+        where : {
+          id_room: IsNull()
+        }
+      });
+
+    console.log('TYPES without room: ', cleaningTypesWithoutRoom);
+    
+    let cleaningTypes
+    if (cleaningTypeWithRoom.length > 0) cleaningTypes = cleaningTypeWithRoom
+    else  cleaningTypes = cleaningTypesWithoutRoom
   
       // Obtener todas las entidades Permissions que coinciden con roomId y userRolId
       const permissions = await this.repoPermissions.find({
         where: {
-          room: room,
           rol: rol,
         },
         relations: {

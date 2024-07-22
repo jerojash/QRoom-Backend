@@ -9,7 +9,7 @@ export class CreatePermissionDto {
 
     @IsString()
     @IsUUID()
-    @MinLength(1)
+    @IsOptional()
     public id_room: string 
 
     @IsString()

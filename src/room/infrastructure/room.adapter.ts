@@ -78,7 +78,7 @@ export class adapterRoomRepository implements IRoom<RoomEntity> {
           room: result
         }
       })
-      if(!permission) return Either.makeLeft<Error,RoomEntity>(new Error('403'));
+      // if(!permission) return Either.makeLeft<Error,RoomEntity>(new Error('403'));
  
       return Either.makeRight<Error,RoomEntity>(result);
     } catch (error) {

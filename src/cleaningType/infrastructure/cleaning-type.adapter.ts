@@ -145,7 +145,9 @@ export class cleaningTypeAdapter implements ICleaningType<CleaningTypeEntity> {
     
     let cleaningTypes
     if (cleaningTypeWithRoom.length > 0) cleaningTypes = cleaningTypeWithRoom
-    else  cleaningTypes = cleaningTypesWithoutRoom
+    else  { console.log('ENTRO AL ELSE');
+      cleaningTypes = cleaningTypesWithoutRoom
+    }
   
       // Obtener todas las entidades Permissions que coinciden con roomId y userRolId
       const permissions = await this.repoPermissions.find({

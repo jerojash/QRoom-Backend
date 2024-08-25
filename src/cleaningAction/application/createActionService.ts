@@ -14,7 +14,7 @@ export class createActionService {
 
         if(dto.user_rol === 'HK') {
             cleaningAction = CleaningAction.create(dto.id_room, dto.id_user, 
-                dto.id_cleaning_type, dto.initial_time, dto.end_time);
+                dto.id_cleaning_type, dto.initial_time, dto.end_time, dto.text);
         } else {
             // TODO IMPROVE THIS IMPLEMENTATION
             cleaningAction = CleaningAction.create(dto.id_room,undefined, undefined, undefined,

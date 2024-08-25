@@ -6,6 +6,7 @@ import { InitialTimeSup } from "./valueObjects/InitialTimeSup";
 import { CleaningActionId } from "./valueObjects/CleaningActionId";
 import { EndTimeHk } from "./valueObjects/EndTimeHk";
 import { EndTimeSup } from "./valueObjects/EndTimeSup";
+import { CleaningActionText } from "./valueObjects/CleaningActionText";
 
 export class CleaningAction {
 
@@ -15,6 +16,7 @@ export class CleaningAction {
         private id_cleaning_type?: CleaningTypeId,
         private initial_time_hk?: InitialTimeHk,
         private end_time_hk?: EndTimeHk,
+        private text?: CleaningActionText,
         private id_supervisor?: UserId,
         private initial_time_sup?: InitialTimeSup,
         private end_time_sup?: EndTimeSup,
@@ -31,6 +33,10 @@ export class CleaningAction {
 
     getCleaningActionIdHk(): UserId {
         return this.id_house_keeper
+    }
+
+    getCleaningActionText(): CleaningActionText {
+        return this.text
     }
 
     getCleaningType(): CleaningTypeId {
@@ -58,13 +64,13 @@ export class CleaningAction {
     }
 
     public static create(id_room?: string, id_hk?: string, id_cleaning_type?: string,
-        init_time_hk?: string, end_time_hk?: string, id_sup?: string, init_time_sup?: 
+        init_time_hk?: string, end_time_hk?: string, text?: string, id_sup?: string, init_time_sup?: 
         string, end_time_sup?: string, id?: string)
     {
         return new CleaningAction(
         new RoomId(id_room), new UserId(id_hk), new CleaningTypeId(id_cleaning_type),
-        new InitialTimeHk(init_time_hk), new EndTimeHk(end_time_hk), new UserId(id_sup), 
-        new InitialTimeSup(init_time_sup), new EndTimeSup(end_time_sup),
+        new InitialTimeHk(init_time_hk), new EndTimeHk(end_time_hk), new CleaningActionText(text),
+        new UserId(id_sup), new InitialTimeSup(init_time_sup), new EndTimeSup(end_time_sup),
         new CleaningActionId(id));
     }
 }

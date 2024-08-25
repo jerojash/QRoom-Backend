@@ -35,5 +35,8 @@ export class CreateCleaningActionDto {
     // @IsDate()
     public end_time?: string
 
+    @IsString()
+    @IsOptional()
+    public text: string 
 
 }

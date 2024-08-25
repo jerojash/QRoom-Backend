@@ -52,4 +52,9 @@ export class CleaningActionEntity extends BaseEntity{
         nullable: true
     })
     end_time_sup: string|null;
+
+    @Column('text', {
+        nullable:true
+    })
+    text: string
 }

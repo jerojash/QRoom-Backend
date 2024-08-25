@@ -30,6 +30,7 @@ export class CleaningActionAdapter implements ICleaningAction{
     const cleaningActionToCreate = CleaningActionEntity.create(); 
 
     try {
+      // Find room
       let room = await this.repoRoom.findOne({
         where: {
           id: action.getCleaningActionIdRoom().getIdRoom()
@@ -41,7 +42,9 @@ export class CleaningActionAdapter implements ICleaningAction{
 
       let user;
 
+      // If user is House Keeper
       if(action.getCleaningActionIdHk()){
+        // Find user
          user = await this.repoUser.findOne({
           where: {
             id: action.getCleaningActionIdHk().getIDUser()
@@ -53,6 +56,7 @@ export class CleaningActionAdapter implements ICleaningAction{
         cleaningActionToCreate.initial_time_hk = action.getCleaningInitTimeHk().getTime();
         cleaningActionToCreate.end_time_hk = action.getCleaningEndTimeHk().getTime();
         
+        // Get cleaning type
         let cleaning_type  = await this.repoType.findOne({
           where: {
             id: action.getCleaningType().getId()
@@ -77,6 +81,8 @@ export class CleaningActionAdapter implements ICleaningAction{
       } else return Either.makeLeft<Error, string>(new Error('Please insert an id_user_hk or id_user_sup'));
 
       if(!user) return Either.makeLeft<Error, string>(new Error('User not found'));
+
+      cleaningActionToCreate.text = action.getCleaningActionText().getText();
 
       await this.repository.save(cleaningActionToCreate);
       return Either.makeRight<Error, string>('Action registered');

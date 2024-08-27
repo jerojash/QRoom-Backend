@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsUUID, MinLength } from "class-validator";
+import { IsNumber, IsOptional, IsString, IsUUID, MinLength } from "class-validator";
 
 export class CreateCleaningTypeDto {
 
@@ -6,6 +6,8 @@ export class CreateCleaningTypeDto {
     @MinLength(1)
     public name: string 
 
+    @IsNumber()
+    public order: number 
 
     @IsString()
     @MinLength(1)

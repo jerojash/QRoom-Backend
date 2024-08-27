@@ -22,6 +22,11 @@ export class CleaningTypeEntity extends BaseEntity{
     })
     created_at: Date|null;
 
+    @Column('integer',{
+        nullable: true
+    })
+    order: number;
+
     @OneToMany(
         ()=>CleaningCheckEntity,
         cleaningCheckEntity => cleaningCheckEntity.type

@@ -31,6 +31,7 @@ export class cleaningTypeAdapter implements ICleaningType<CleaningTypeEntity> {
     cleaningTypeToCreate.id = cleaningType.getId().getId();
     cleaningTypeToCreate.name = cleaningType.getName().getName();
     cleaningTypeToCreate.description = cleaningType.getDescription().getDescription();
+    cleaningTypeToCreate.order = cleaningType.getOrder().getOrder();
     cleaningTypeToCreate.created_at = new Date();
 
     try {

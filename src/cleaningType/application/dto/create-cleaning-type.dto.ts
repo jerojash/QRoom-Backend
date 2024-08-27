@@ -7,9 +7,9 @@ export class CreateCleaningTypeDto {
     public name: string 
 
 
-    @IsUUID()
+    @IsString()
     @MinLength(1)
     @IsOptional()
-    public id_room: string 
+    public description: string 
 
 }

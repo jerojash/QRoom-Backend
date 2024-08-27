@@ -27,8 +27,9 @@ export class PermissionsAdapter implements IPermissions{
   async createPermissions(permissions: Permissions) {
     const permissionToCreate = PermissionsEntity.create()
       const id_rol = permissions.getIdRol().getIdRol();
-      // const id_room = permissions.getIdRoom().getIdRoom();
+      const id_room = permissions.getIdRoom().getIdRoom();
       const id_cleaning_type = permissions.getIdCleaningType().getIdCleaningType();
+      
       try {
 
         // Verify if rol exists
@@ -42,15 +43,14 @@ export class PermissionsAdapter implements IPermissions{
         permissionToCreate.rol = rol;
         
         // Verify if room exists
-        // The room_id is already saved in the cleaning-type, this is redundant
-        // let room = await this.repoRoom.findOne({
-        //   where: {
-        //     id: id_room
-        //   }
-        // });
-        // console.log('ROOM: ', room);
-        // if (!room) return Either.makeLeft<Error, string>(new Error('Room not found'));
-        // permissionToCreate.room = room;
+        let room = await this.repoRoom.findOne({
+          where: {
+            id: id_room
+          }
+        });
+        console.log('ROOM: ', room);
+        if (!room) return Either.makeLeft<Error, string>(new Error('Room not found'));
+        permissionToCreate.room = room;
       
         // Verify if cleaning type exists
         let cleaning_type = await this.repoCleaningType.findOne({

@@ -1,12 +1,11 @@
 import { CleaningTypeDescription } from "./valueObjects/CleaningTypeDescription";
 import { CleaningTypeId } from "./valueObjects/CleaningTypeId";
 import { CleaningTypeName } from "./valueObjects/CleaningTypeName";
-import { RoomId } from "./valueObjects/RoomId";
 
 export class CleaningType {
     constructor(
         private name: CleaningTypeName,
-        private idRoom?: RoomId,
+        private description: CleaningTypeDescription,
         private id?: CleaningTypeId
         
     ){}
@@ -15,15 +14,16 @@ export class CleaningType {
         return this.name;
     };
 
-    getIdRoom(): RoomId {
-        return this.idRoom;
-    }
+    getDescription(): CleaningTypeDescription {
+        return this.description;
+    };
 
     getId(): CleaningTypeId {
         return this.id;
     }
 
-    static create(name: string, id_room?: string, id?: string){
-        return new CleaningType(new CleaningTypeName(name), new RoomId(id_room), new CleaningTypeId(id))
+    static create(name: string, description?: string, id?: string){
+        return new CleaningType(new CleaningTypeName(name), 
+        new CleaningTypeDescription(description), new CleaningTypeId(id))
     }
 }

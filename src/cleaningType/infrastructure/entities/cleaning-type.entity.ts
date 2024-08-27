@@ -15,7 +15,7 @@ export class CleaningTypeEntity extends BaseEntity{
     @Column('text', {
         nullable: true
     })
-    id_room?: string | null;
+    description?: string | null;
 
     @Column('timestamp',{
         nullable: true

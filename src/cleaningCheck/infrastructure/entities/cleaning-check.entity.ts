@@ -16,6 +16,11 @@ export class CleaningCheckEntity extends BaseEntity{
     })
     created_at: Date|null;
 
+    @Column('integer',{
+        nullable: true
+    })
+    order: number;
+
     @TreeChildren({cascade: true})
     sub_task: CleaningCheckEntity[]
 

@@ -1,11 +1,13 @@
 
 import { CleaningCheckId } from "./valueObjects/CleaningCheckId";
 import { CleaningCheckName } from "./valueObjects/CleaningCheckName";
+import { CleaningCheckOrder } from "./valueObjects/CleaningCheckOrder";
 import { CleaningTypeId } from "./valueObjects/CleaningTypeId";
 
 export class CleaningCheck {
     constructor(
         private name: CleaningCheckName,
+        private order: CleaningCheckOrder,
         private id_cleaning_type?: CleaningTypeId,
         private id_parent_task?: CleaningCheckId,
         private id?: CleaningCheckId
@@ -14,6 +16,10 @@ export class CleaningCheck {
 
     getName(): CleaningCheckName {
         return this.name;
+    };
+
+    getOrder(): CleaningCheckOrder {
+        return this.order;
     };
 
     getTypeId(): CleaningTypeId {
@@ -28,9 +34,9 @@ export class CleaningCheck {
         return this.id_parent_task;
     }
 
-    static create(name: string, id_type: string, 
-        id_sub_task: string, id?: string){
-        return new CleaningCheck(new CleaningCheckName(name),
+    static create(name: string, order: number, id_type?: string, 
+        id_sub_task?: string, id?: string){
+        return new CleaningCheck(new CleaningCheckName(name), new CleaningCheckOrder(order),
         new CleaningTypeId(id_type), new CleaningCheckId(id_sub_task), 
         new CleaningCheckId(id))
     }

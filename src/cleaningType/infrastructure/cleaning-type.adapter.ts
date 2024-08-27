@@ -98,7 +98,7 @@ export class cleaningTypeAdapter implements ICleaningType<CleaningTypeEntity> {
           },
         },
         order: {
-          created_at: 'ASC',
+          order: 'ASC',
           check: {
             created_at: 'ASC',
             sub_task: {

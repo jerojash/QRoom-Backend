@@ -11,7 +11,10 @@ import { RoomEntity } from 'src/room/infrastructure/entities/room.entity';
 import { UserEntity } from 'src/user/infrastructure/entities/user.entity';
 import { CleaningTypeEntity } from 'src/cleaningType/infrastructure/entities/cleaning-type.entity';
 import { join } from 'path';
+import { PrinterService } from 'src/printer/printer.service';
+import { TDocumentDefinitions } from 'pdfmake/interfaces';
 const PDFDocument = require('pdfkit-table');
+
 @Injectable()
 export class CleaningActionAdapter implements ICleaningAction{
 
@@ -23,8 +26,20 @@ export class CleaningActionAdapter implements ICleaningAction{
     @InjectRepository(UserEntity)
     private readonly repoUser: Repository<UserEntity>,
     @InjectRepository(CleaningTypeEntity)
-    private readonly repoType: Repository<CleaningTypeEntity>
+    private readonly repoType: Repository<CleaningTypeEntity>,
+    private readonly printerService: PrinterService
   ){}
+
+
+  testPdf() {
+
+    const docDefinition: TDocumentDefinitions = {
+      content: ['Hola Mundo'],
+    };
+    const doc = this.printerService.createPdf(docDefinition);
+    return doc;
+
+  }
 
   async createCleaningAction(action: CleaningAction): Promise<Either<Error, string>> {
     const cleaningActionToCreate = CleaningActionEntity.create(); 

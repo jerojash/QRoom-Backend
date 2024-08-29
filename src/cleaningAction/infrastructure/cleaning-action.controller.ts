@@ -39,6 +39,17 @@ export class CleaningActionController {
 
   }
 
+  @Get('/pdf/test')
+  async pdfTest(@Res() res){
+
+    const pdfDoc = await this.CleaningActionAdapter.testPdf();
+    res.setHeader('Content-Type', 'application/pdf');
+    pdfDoc.info.Title = 'Control Rooms'
+    pdfDoc.pipe(res);
+    pdfDoc.end();
+
+  }
+
   // @Get(':id')
   // findOne(@Param('id') id: string) {
   //   return this.CleaningActionAdapter.findOne(+id);

@@ -8,10 +8,11 @@ import { CleaningTypeModule } from './cleaningType/infrastructure/cleaning-type.
 import { CleaningCheckModule } from './cleaningCheck/infrastructure/cleaning-check.module';
 import { CleaningActionModule } from './cleaningAction/infrastructure/cleaning-action.module';
 import { PermissionsModule } from './permissions/infrastructure/permissions.module';
+import { PrinterModule } from './printer/printer.module';
 
 @Module({
   imports: [UserModule, RolModule, RoomModule, CleaningTypeModule,
-    CleaningCheckModule, CleaningActionModule,
+    CleaningCheckModule, CleaningActionModule, PrinterModule,
     ConfigModule.forRoot(),
 
     TypeOrmModule.forRoot({

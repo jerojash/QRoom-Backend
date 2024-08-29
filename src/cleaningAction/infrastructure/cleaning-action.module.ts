@@ -7,11 +7,13 @@ import { UserEntity } from 'src/user/infrastructure/entities/user.entity';
 import { CleaningTypeEntity } from 'src/cleaningType/infrastructure/entities/cleaning-type.entity';
 import { RoomEntity } from 'src/room/infrastructure/entities/room.entity';
 import { createActionService } from '../application/createActionService';
+import { PrinterModule } from 'src/printer/printer.module';
 
 @Module({
   controllers: [CleaningActionController],
   providers: [CleaningActionAdapter, createActionService],
   imports:[
+    PrinterModule,
     TypeOrmModule.forFeature([CleaningActionEntity]),
     TypeOrmModule.forFeature([CleaningTypeEntity]),
     TypeOrmModule.forFeature([UserEntity]),

@@ -26,10 +26,12 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/typeorm": "^10.0.2",
+    "@types/pdfmake": "^0.2.9",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "pdfkit": "^0.14.0",
     "pdfkit-table": "^0.1.99",
+    "pdfmake": "^0.2.12",
     "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
@@ -55,7 +57,7 @@
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "4.2.0",
-    "typescript": "^5.0.0"
+    "typescript": "5.5.3"
   },
   "jest": {
     "moduleFileExtensions": [

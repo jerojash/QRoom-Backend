@@ -11,6 +11,7 @@ import { CleaningTypeEntity } from 'src/cleaningType/infrastructure/entities/cle
 import { join } from 'path';
 import { PrinterService } from 'src/printer/printer.service';
 import { getCleaningControlPdf } from 'src/reports';
+import { AreaEntity } from 'src/area/infrastructure/entities/area.entity';
 const PDFDocument = require('pdfkit-table');
 
 @Injectable()
@@ -25,12 +26,22 @@ export class CleaningActionAdapter implements ICleaningAction{
     private readonly repoUser: Repository<UserEntity>,
     @InjectRepository(CleaningTypeEntity)
     private readonly repoType: Repository<CleaningTypeEntity>,
+    @InjectRepository(AreaEntity)
+    private readonly repoArea: Repository<AreaEntity>,
     private readonly printerService: PrinterService
   ){}
 
 
-  testPdf() {
-    const docDefinition = getCleaningControlPdf({});
+  async testPdf() {
+    const areas = await this.repoArea.find({
+      relations: {
+        rooms: true
+      }
+    });
+    const docDefinition = getCleaningControlPdf({
+      areas,
+      actions: []
+    });
     const doc = this.printerService.createPdf(docDefinition);
     return doc;
   }

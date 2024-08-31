@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCleaningActionDto } from '../application/dto/create-cleaning-action.dto';
-import { UpdateCleaningActionDto } from '../application/dto/update-cleaning-action.dto';
 import { ICleaningAction } from '../domain/repository/ICleaningAction';
 import { Either } from 'src/generics/Either';
 import { CleaningAction } from '../domain/cleaningAction';
@@ -12,7 +10,7 @@ import { UserEntity } from 'src/user/infrastructure/entities/user.entity';
 import { CleaningTypeEntity } from 'src/cleaningType/infrastructure/entities/cleaning-type.entity';
 import { join } from 'path';
 import { PrinterService } from 'src/printer/printer.service';
-import { TDocumentDefinitions } from 'pdfmake/interfaces';
+import { getCleaningControlPdf } from 'src/reports';
 const PDFDocument = require('pdfkit-table');
 
 @Injectable()
@@ -32,13 +30,9 @@ export class CleaningActionAdapter implements ICleaningAction{
 
 
   testPdf() {
-
-    const docDefinition: TDocumentDefinitions = {
-      content: ['Hola Mundo'],
-    };
+    const docDefinition = getCleaningControlPdf({});
     const doc = this.printerService.createPdf(docDefinition);
     return doc;
-
   }
 
   async createCleaningAction(action: CleaningAction): Promise<Either<Error, string>> {
@@ -117,7 +111,8 @@ export class CleaningActionAdapter implements ICleaningAction{
             hk_: true,
             cleaning_type_: true,
             sup_: true
-          }
+          },
+          area: true
         }
       })
 
@@ -141,7 +136,7 @@ export class CleaningActionAdapter implements ICleaningAction{
             pageNumber++;
 
             if (pageNumber > 1){
-              doc.image(join(process.cwd(), "upload/logo.png"), doc.page.width - 100, 5, {fit: [45,45], align: 'center'})
+              doc.image(join(process.cwd(), "src/upload/logo.png"), doc.page.width - 100, 5, {fit: [45,45], align: 'center'})
               doc.moveTo(50, 55)
               .lineTo(doc.page.width - 50, 55)
               .stroke(); 
@@ -168,7 +163,7 @@ export class CleaningActionAdapter implements ICleaningAction{
           )
 
           doc.addPage();
-          doc.image(join(process.cwd(), "upload/logo.png"), doc.page.width/2 - 100, 150, {width: 200,})
+          doc.image(join(process.cwd(), "src/upload/logo.png"), doc.page.width/2 - 100, 150, {width: 200,})
           doc.text('',0,400);
           doc.font("Helvetica-Bold").fontSize(24);
           doc.text("QRoom",{
@@ -202,7 +197,7 @@ export class CleaningActionAdapter implements ICleaningAction{
 
             //Create table
             const table = {
-              title: `Area: ${rooms[i].area}\nRoom: ${rooms[i].name}`,
+              title: `Area: ${rooms[i].area.name}\nRoom: ${rooms[i].name}`,
               subtitle: "EVS PERSONNEL",
               headers: [{label:"Date Initial/time", property:"date", align: "left", headerAlign:"center", }, 
               {label:"TC= Terminal Cleaning\nUv= UV Desinfection\nBL= Blocked (No Terminal Cleaning)", 

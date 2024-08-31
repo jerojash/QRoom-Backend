@@ -1,11 +1,11 @@
-import { RoomArea } from "./valueObjects/RoomArea";
+import { AreaId } from "./valueObjects/AreaId";
 import { RoomId } from "./valueObjects/RoomId";
 import { RoomName } from "./valueObjects/RoomName";
 
 export class Room{
 
     private constructor(
-        private area: RoomArea,
+        private area: AreaId,
         private name: RoomName,
         private id?: RoomId
     ){}
@@ -18,11 +18,11 @@ export class Room{
         return this.name;
     }
 
-    public getArea(): RoomArea {
+    public getArea(): AreaId {
         return this.area;
     }
 
     static create(name: string, area: string, id?: string){
-        return new Room( new RoomArea(area), new RoomName(name), new RoomId(id))
+        return new Room( new AreaId(area), new RoomName(name), new RoomId(id))
     }
 }

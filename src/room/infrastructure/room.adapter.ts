@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 import { PermissionsEntity } from 'src/permissions/infrastructure/entities/permission.entity';
 import { RolEntity } from 'src/rol/infrastructure/entities/rol.entity';
 import { validate as isValidUUID } from 'uuid';
+import { AreaEntity } from 'src/area/infrastructure/entities/area.entity';
 
 @Injectable()
 export class adapterRoomRepository implements IRoom<RoomEntity> {
@@ -17,27 +18,35 @@ export class adapterRoomRepository implements IRoom<RoomEntity> {
     @InjectRepository(PermissionsEntity)
     private readonly repoPermissions: Repository<PermissionsEntity>,
     @InjectRepository(RolEntity)
-    private readonly repoRol: Repository<RolEntity>
+    private readonly repoRol: Repository<RolEntity>,
+    @InjectRepository(AreaEntity)
+    private readonly repoArea: Repository<AreaEntity>
   ) {}
 
    async createRoom(room: Room): Promise<Either<Error, RoomEntity>> {
     const roomToCreate = RoomEntity.create()
         roomToCreate.id = room.getIdRoom().getIdRoom();
         roomToCreate.name = room.getName().getName();
-        roomToCreate.area = room.getArea().getArea();
 
-        try {
-            const result = await this.repository.save(roomToCreate);
-            return Either.makeRight<Error, RoomEntity>(result);
-        } catch (error) {
-            if(error.code === `23505` ) 
-                return Either.makeLeft<Error, RoomEntity>(new Error(`Room exits in database ${ JSON.stringify( error.detail ) }`));
-    
-            console.log(error);
-            return Either.makeLeft<Error, RoomEntity>(error);
+    const areaId = room.getArea().getIdArea();
+
+    try {
+      const area = await this.repoArea.findOne({
+        where: {
+          id: areaId,
         }
-    
-    return
+      })
+      if(!area) return Either.makeLeft<Error, RoomEntity>(new Error('Area not found'));
+      roomToCreate.area = area;
+      const result = await this.repository.save(roomToCreate);
+      return Either.makeRight<Error, RoomEntity>(result);
+    } catch (error) {
+        if(error.code === `23505` ) 
+            return Either.makeLeft<Error, RoomEntity>(new Error(`Room exits in database ${ JSON.stringify( error.detail ) }`));
+
+        console.log(error);
+        return Either.makeLeft<Error, RoomEntity>(error);
+    }
   }
 
   async getRooms(): Promise<Either<Error, RoomEntity[]>> {

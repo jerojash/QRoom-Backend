@@ -9,6 +9,7 @@ import { getRoomsService } from '../application/getRoomService';
 import { CleaningActionEntity } from 'src/cleaningAction/infrastructure/entities/cleaning-action.entity';
 import { PermissionsEntity } from 'src/permissions/infrastructure/entities/permission.entity';
 import { RolEntity } from 'src/rol/infrastructure/entities/rol.entity';
+import { AreaEntity } from 'src/area/infrastructure/entities/area.entity';
 
 @Module({
   controllers: [RoomController],
@@ -16,6 +17,7 @@ import { RolEntity } from 'src/rol/infrastructure/entities/rol.entity';
     getRoomByIdService, getRoomsService],
   imports:[
     TypeOrmModule.forFeature([RoomEntity]),
+    TypeOrmModule.forFeature([AreaEntity]),
     TypeOrmModule.forFeature([CleaningActionEntity]),
     TypeOrmModule.forFeature([PermissionsEntity]),
     TypeOrmModule.forFeature([RolEntity])

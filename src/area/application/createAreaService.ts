@@ -1,7 +1,7 @@
 import { Either } from "src/generics/Either";
-import { CreateAreaDto } from "./dto/create-Area.dto";
+import { CreateAreaDto } from "./dto/create-area.dto";
 import { IArea } from "../domain/repository/IArea";
-import { Area } from "../domain/Area";
+import { Area } from "../domain/area";
 
 export class createAreaService<T>{
 

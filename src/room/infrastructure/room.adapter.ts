@@ -51,7 +51,11 @@ export class adapterRoomRepository implements IRoom<RoomEntity> {
 
   async getRooms(): Promise<Either<Error, RoomEntity[]>> {
     try {
-      let result = await this.repository.find()
+      let result = await this.repository.find({
+        relations: {
+          area: true
+        }
+      })
   
       return Either.makeRight<Error,RoomEntity[]>(result);
     } catch (error) {
@@ -76,6 +80,9 @@ export class adapterRoomRepository implements IRoom<RoomEntity> {
       let result = await this.repository.findOne({
         where: {
           id:id
+        },
+        relations: {
+          area: true
         }
       })
   

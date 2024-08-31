@@ -9,6 +9,7 @@ import { CleaningCheckModule } from './cleaningCheck/infrastructure/cleaning-che
 import { CleaningActionModule } from './cleaningAction/infrastructure/cleaning-action.module';
 import { PermissionsModule } from './permissions/infrastructure/permissions.module';
 import { PrinterModule } from './printer/printer.module';
+import { AreaModule } from './area/infrastructure/area.module';
 
 @Module({
   imports: [UserModule, RolModule, RoomModule, CleaningTypeModule,
@@ -27,6 +28,8 @@ import { PrinterModule } from './printer/printer.module';
     }),
 
     PermissionsModule,
+
+    AreaModule,
   ],
 })
 export class AppModule {}

@@ -6,13 +6,13 @@ const logo: Content = {
   width: 70,
   height: 70,
   alignment: 'center',
-  margin: [40, 15, -20, 0],
+  margin: [40, 15, -40, 0],
 };
 
 const currentDate: Content = {
-    text: DateFormatter.getDDMMMMYYYY(new Date()),
+    text: DateFormatter.getFormattedDate(new Date()),
     alignment: 'right',
-    margin: [0, 30, 30, 30],
+    margin: [-50, 30, 40, 30],
     width: 150,
 }
 
@@ -31,7 +31,7 @@ export const headerSection = (options: HeaderOptions): Content => {
   const headerSubTitle: Content = subTitle? {
     text: subTitle,
     alignment: 'center',
-    margin: [0,2,0,0],
+    margin: [77,3,0,0],
     style: {
         bold: true,
         fontSize: 16,
@@ -44,7 +44,7 @@ export const headerSection = (options: HeaderOptions): Content => {
             {
                 text: title,
                 alignment: 'center',
-                margin: [0,15,0,0],
+                margin: [77,30,0,0],
                 style: {
                     bold: true,
                     fontSize: 22,

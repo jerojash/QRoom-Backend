@@ -5,8 +5,8 @@ const logo: Content = {
     image: 'src/upload/hire-place.png',
     width: 150,
     height: 16,
-    alignment: 'right',
-    margin: [0,16,-165,10],
+    alignment: 'center',
+    margin: [20,16,-40,10],
   };
 
 export const footerSection = (currentPage: number, pageCount: number): Content => {

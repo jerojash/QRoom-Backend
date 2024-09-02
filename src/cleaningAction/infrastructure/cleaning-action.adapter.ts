@@ -31,9 +31,8 @@ export class CleaningActionAdapter implements ICleaningAction{
     private readonly printerService: PrinterService
   ){}
 
-
   async testPdf() {
-    const areas = await this.repoArea
+    const areasDashboard1 = await this.repoArea
       .createQueryBuilder('area')
       .leftJoinAndSelect('area.rooms', 'room')
       .leftJoinAndSelect(
@@ -46,10 +45,65 @@ export class CleaningActionAdapter implements ICleaningAction{
       .where('area.name IN (:...names)', { names: ['Main OR', 'SPD'] })
       .orderBy('room.name', 'ASC')
       .getMany();
+    
+      const areasDashboard3 = await this.repoArea
+      .createQueryBuilder('area')
+      .leftJoinAndSelect('area.rooms', 'room')
+      .leftJoinAndSelect(
+        'room.actions',
+        'action',
+        'action.id = (SELECT a.id FROM cleaning_action a WHERE a.room_id = room.id ORDER BY a.initial_time_hk DESC LIMIT 1)'
+      )
+      .leftJoinAndSelect('action.hk_', 'hk')
+      .leftJoinAndSelect('action.cleaning_type_', 'cleaningType')
+      .where('area.name IN (:...names)', 
+        { names: 
+          ['ASC (Ambulatory Surgical Center)', 
+           'PACU', 
+           'Hemodialysis', 
+           'SPD (Sterile Processing Department)',
+           'CATH Lab', 
+           'IR (Interventional Radiology)'
+          ] })
+      .orderBy('room.name', 'ASC')
+      .getMany();
+
+      const areasDashboard2 = await this.repoArea
+      .createQueryBuilder('area')
+      .leftJoinAndSelect('area.rooms', 'room')
+      .leftJoinAndSelect(
+        'room.actions',
+        'action',
+        'action.id = (SELECT a.id FROM cleaning_action a WHERE a.room_id = room.id ORDER BY a.initial_time_hk DESC LIMIT 1)'
+      )
+      .leftJoinAndSelect('action.hk_', 'hk')
+      .leftJoinAndSelect('action.cleaning_type_', 'cleaningType')
+      .where('area.name IN (:...names)', { names: ['BMT (Bone Marrow Transplant)'] })
+      .orderBy('room.name', 'ASC')
+      .getMany();
+    
+    //Get Cleaning Actions by Rooms
+    const rooms = await this.repoRoom.find({
+      relations: {
+        actions: {
+          hk_: true,
+          cleaning_type_: true,
+          sup_: true
+        },
+        area: true
+      },
+      order: {
+        actions: {
+          initial_time_hk: 'DESC'
+        }
+      }
+    })
 
     const docDefinition = getCleaningControlPdf({
-      areas,
-      actions: []
+      areasDashboard1,
+      areasDashboard2,
+      areasDashboard3,
+      rooms
     });
     const doc = this.printerService.createPdf(docDefinition);
     return doc;

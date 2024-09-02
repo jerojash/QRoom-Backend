@@ -104,6 +104,11 @@ export class CleaningActionAdapter implements ICleaningAction{
       }
     })
 
+    console.log('DASH1: ', JSON.stringify(areasDashboard1));
+    console.log('DASH2: ', JSON.stringify(areasDashboard2));
+    console.log('DASH3: ', JSON.stringify(areasDashboard3));
+    console.log('ROOMS: ', JSON.stringify(rooms));
+
     const docDefinition = getCleaningControlPdf({
       areasDashboard1,
       areasDashboard2,

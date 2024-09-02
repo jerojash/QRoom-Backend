@@ -55,7 +55,6 @@ function createCover(): Content {
         }],
       ],
     },
-    pageBreak: 'after',
     pageOrientation: 'landscape',
   }
 }
@@ -70,6 +69,8 @@ function createTile(title: string, subTitle: string): Content[] {
           bold: true,
           fontSize: 20,
       },
+      pageOrientation:'landscape',
+      pageBreak: 'before',
     },
     {
       text: subTitle,
@@ -79,7 +80,7 @@ function createTile(title: string, subTitle: string): Content[] {
           // bold: true,
           fontSize: 16,
       },
-    }
+    },
   ]
 }
 
@@ -137,7 +138,7 @@ export const getCleaningControlPdf = (options: reportOptions) => {
     return docDefinition;
 }
 
-function createTableDashboard(area: AreaEntity[], next: boolean = true): Content {
+function createTableDashboard(area: AreaEntity[]): Content {
   return {
     layout: 'customLayout01', // optional
     table: {
@@ -217,8 +218,6 @@ function createTableDashboard(area: AreaEntity[], next: boolean = true): Content
         )).flat()
       ],
     },
-    pageOrientation: next ? 'landscape' : 'portrait',
-    pageBreak: next ? 'after': null,
   }
 }
 

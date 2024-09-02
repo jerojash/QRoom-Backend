@@ -3,7 +3,7 @@ import { ICleaningAction } from '../domain/repository/ICleaningAction';
 import { Either } from 'src/generics/Either';
 import { CleaningAction } from '../domain/cleaningAction';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CleaningActionEntity } from './entities/cleaning-action.entity';
 import { RoomEntity } from 'src/room/infrastructure/entities/room.entity';
 import { UserEntity } from 'src/user/infrastructure/entities/user.entity';
@@ -33,11 +33,20 @@ export class CleaningActionAdapter implements ICleaningAction{
 
 
   async testPdf() {
-    const areas = await this.repoArea.find({
-      relations: {
-        rooms: true
-      }
-    });
+    const areas = await this.repoArea
+      .createQueryBuilder('area')
+      .leftJoinAndSelect('area.rooms', 'room')
+      .leftJoinAndSelect(
+        'room.actions',
+        'action',
+        'action.id = (SELECT a.id FROM cleaning_action a WHERE a.room_id = room.id ORDER BY a.initial_time_hk DESC LIMIT 1)'
+      )
+      .leftJoinAndSelect('action.hk_', 'hk')
+      .leftJoinAndSelect('action.cleaning_type_', 'cleaningType')
+      .where('area.name IN (:...names)', { names: ['Main OR', 'SPD'] })
+      .orderBy('room.name', 'ASC')
+      .getMany();
+
     const docDefinition = getCleaningControlPdf({
       areas,
       actions: []

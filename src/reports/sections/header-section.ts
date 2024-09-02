@@ -29,7 +29,7 @@ export const headerSection = (options: HeaderOptions): Content => {
   const headerLogo: Content = showLogo ? logo : null;
   const headerDate: Content = showDate ? currentDate : null;
   const headerSubTitle: Content = subTitle? {
-    text: title,
+    text: subTitle,
     alignment: 'center',
     margin: [0,2,0,0],
     style: {

@@ -29,4 +29,9 @@ export class RoomEntity extends BaseEntity {
     )
     area: AreaEntity
 
+    @Column('integer',{
+        nullable: true
+    })
+    order: number;
+
 }

@@ -12,7 +12,7 @@ export class createAreaService<T>{
 
     async execute(dto: CreateAreaDto): Promise<Either<Error,T>>{
         
-        const area = Area.create(dto.name);
+        const area = Area.create(dto.name, dto.order);
 
         const result = this.AreaRepository.createArea(area);
         return result

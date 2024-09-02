@@ -15,4 +15,9 @@ export class AreaEntity extends BaseEntity {
     )
     rooms: RoomEntity[]
 
+    @Column('integer',{
+        nullable: true
+    })
+    order: number;
+
 }

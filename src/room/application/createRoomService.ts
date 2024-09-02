@@ -12,7 +12,7 @@ export class createRoomService<T>{
 
     async execute(dto: CreateRoomDto): Promise<Either<Error,T>>{
         
-        const room = Room.create(dto.name, dto.area);
+        const room = Room.create(dto.name, dto.area, dto.order);
 
         const result = this.RoomRepository.createRoom(room);
         return result

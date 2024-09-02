@@ -1,12 +1,14 @@
 import { AreaId } from "./valueObjects/AreaId";
 import { RoomId } from "./valueObjects/RoomId";
 import { RoomName } from "./valueObjects/RoomName";
+import { RoomOrder } from "./valueObjects/RoomOrder";
 
 export class Room{
 
     private constructor(
         private area: AreaId,
         private name: RoomName,
+        private order: RoomOrder,
         private id?: RoomId
     ){}
 
@@ -22,7 +24,12 @@ export class Room{
         return this.area;
     }
 
-    static create(name: string, area: string, id?: string){
-        return new Room( new AreaId(area), new RoomName(name), new RoomId(id))
+    public getOrder(): RoomOrder {
+        return this.order;
+    }
+
+    static create(name: string, area: string, order: number, id?: string){
+        return new Room( new AreaId(area), new RoomName(name), 
+        new RoomOrder(order), new RoomId(id))
     }
 }

@@ -10,7 +10,6 @@ export class CreateCleaningCheckDto {
     @IsUUID()
     public type_id: string
 
-
     @IsNumber()
     public order: number 
 

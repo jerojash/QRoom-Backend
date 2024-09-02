@@ -27,6 +27,7 @@ export class adapterRoomRepository implements IRoom<RoomEntity> {
     const roomToCreate = RoomEntity.create()
         roomToCreate.id = room.getIdRoom().getIdRoom();
         roomToCreate.name = room.getName().getName();
+        roomToCreate.order = room.getOrder().getOrder();
 
     const areaId = room.getArea().getIdArea();
 
@@ -54,6 +55,14 @@ export class adapterRoomRepository implements IRoom<RoomEntity> {
       let result = await this.repository.find({
         relations: {
           area: true
+        },
+        select: {
+          id: true,
+          name: true,
+          area: {
+            id: true,
+            name: true
+          }
         }
       })
   
@@ -83,6 +92,14 @@ export class adapterRoomRepository implements IRoom<RoomEntity> {
         },
         relations: {
           area: true
+        },
+        select: {
+          id: true,
+          name: true,
+          area: {
+            id: true,
+            name: true
+          }
         }
       })
   

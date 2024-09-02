@@ -16,6 +16,7 @@ export class adapterAreaService implements IArea<AreaEntity>{
     const areaToCreate = AreaEntity.create();
     areaToCreate.id = area.getIdArea().getIdArea();
     areaToCreate.name = area.getName().getName();
+    areaToCreate.order = area.getOrder().getOrder();
     
     try {
       const result = await this.repository.save(areaToCreate);

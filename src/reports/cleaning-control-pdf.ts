@@ -112,13 +112,25 @@ export const getCleaningControlPdf = (options: reportOptions) => {
         pageMargins: [40, 105, 40, 60],
         content: [
           createCover(),
-          ...createTile('Areas Log', areasDashboard1[0].name),
-          createTableDashboard(areasDashboard1),
-          ...createTile('Areas Log', areasDashboard2[0].name),
-          createTableDashboard(areasDashboard2),
-          ...createTile('Areas Log', 'ASC, PACU, Hemodialysis, SPD, CATH Lab, IR'),
-          createTableDashboard(areasDashboard3, false),
-          ...rooms.map((room) => createTableRooms(room))
+          areasDashboard1.length > 0 ? 
+          [
+            ...createTile('Areas Log', areasDashboard1[0].name), 
+            createTableDashboard(areasDashboard1)
+          ]
+          : null,
+          areasDashboard2.length > 0 ? 
+          [
+            ...createTile('Areas Log', areasDashboard2[0].name), 
+            createTableDashboard(areasDashboard2)
+          ]
+          : null,
+          areasDashboard3.length > 0 ? 
+          [
+            ...createTile('Areas Log', 'ASC, PACU, Hemodialysis, SPD, CATH Lab, IR'),
+            createTableDashboard(areasDashboard3)
+          ]
+          : null,
+          rooms.length > 0 ? [...rooms.map((room) => createTableRooms(room))] : null
         ].flat(),
       };
 

@@ -135,7 +135,39 @@ function createTableDashboard(area: AreaEntity[], next: boolean = true): Content
       widths: [ 90, 150, 90, 145, '*' ],
       heights: 'auto',
       body: [
-        [ 'Room', 'Date', 'Personnel', 'Type Cleaning', 'Observation' ],
+        // Columns Headers
+        [ 
+          {
+            text: 'Room',
+            style: {
+              bold: true
+            }
+          }, 
+          {
+            text: 'Date',
+            style: {
+              bold: true
+            }
+          },
+          {
+            text: 'Personnel',
+            style: {
+              bold: true
+            }
+          },
+          {
+            text: 'Type Cleaning',
+            style: {
+              bold: true
+            }
+          }, 
+          {
+            text: 'Observation',
+            style: {
+              bold: true
+            }
+          }],
+          // Rows
         ...area.map((area) => area.rooms.map((room) => 
           room.actions[0] ? [
             room.name,
@@ -208,7 +240,33 @@ function createTableRooms(room: RoomEntity): Content[] {
         widths: [ 150, 90, 145, '*' ],
         heights: 'auto',
         body: [
-          [ 'Date, Time', 'Personnel Name', 'Type Cleaning', 'Observation' ],
+          // Columns Headers
+        [
+          {
+            text: 'Date, Time',
+            style: {
+              bold: true
+            }
+          },
+          {
+            text: 'Personnel',
+            style: {
+              bold: true
+            }
+          },
+          {
+            text: 'Type Cleaning',
+            style: {
+              bold: true
+            }
+          }, 
+          {
+            text: 'Observation',
+            style: {
+              bold: true
+            }
+          }],
+          // Rows
           ...(room.actions as unknown as Array<CleaningActionEntity>).map((action) => 
             action ? 
             [

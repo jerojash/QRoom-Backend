@@ -43,7 +43,7 @@ export class CleaningActionAdapter implements ICleaningAction{
       .leftJoinAndSelect('action.hk_', 'hk')
       .leftJoinAndSelect('action.cleaning_type_', 'cleaningType')
       .where('area.name IN (:...names)', { names: ['Main OR', 'SPD'] })
-      .orderBy('room.name', 'ASC')
+      .orderBy('room.order', 'ASC')
       .getMany();
     
       const areasDashboard3 = await this.repoArea
@@ -65,7 +65,7 @@ export class CleaningActionAdapter implements ICleaningAction{
            'CATH Lab', 
            'IR (Interventional Radiology)'
           ] })
-      .orderBy('room.name', 'ASC')
+      .orderBy('room.order', 'ASC')
       .getMany();
 
       const areasDashboard2 = await this.repoArea
@@ -79,7 +79,8 @@ export class CleaningActionAdapter implements ICleaningAction{
       .leftJoinAndSelect('action.hk_', 'hk')
       .leftJoinAndSelect('action.cleaning_type_', 'cleaningType')
       .where('area.name IN (:...names)', { names: ['BMT (Bone Marrow Transplant)'] })
-      .orderBy('room.name', 'ASC')
+      .orderBy('area.order', 'ASC')
+      .orderBy('room.order', 'ASC')
       .getMany();
     
     //Get Cleaning Actions by Rooms
@@ -93,6 +94,10 @@ export class CleaningActionAdapter implements ICleaningAction{
         area: true
       },
       order: {
+        area: {
+          order: 'ASC'
+        },
+        order: 'ASC',
         actions: {
           initial_time_hk: 'DESC'
         }

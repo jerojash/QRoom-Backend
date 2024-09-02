@@ -2,7 +2,7 @@ import { Content, TDocumentDefinitions } from "pdfmake/interfaces";
 import { headerSection } from "./sections/header-section";
 import { CleaningActionEntity } from "src/cleaningAction/infrastructure/entities/cleaning-action.entity";
 import { AreaEntity } from "src/area/infrastructure/entities/area.entity";
-import { footerSection } from "./sections/footer-section";
+import { footerSection, footerSection2 } from "./sections/footer-section";
 import { DateFormatter } from "./helpers";
 import { RoomEntity } from "src/room/infrastructure/entities/room.entity";
 
@@ -13,6 +13,51 @@ interface reportOptions {
   areasDashboard2: AreaEntity[];
   areasDashboard3: AreaEntity[];
   rooms: RoomEntity[];
+}
+
+const logo: Content = {
+  image: 'src/upload/logo.png',
+  width: 200,
+  height: 200,
+  alignment: 'center',
+  margin: [0,280,0,10],
+};
+
+function createCover(): Content {
+  return {
+    layout: 'noBorders', // optional
+    alignment: 'center',
+    margin: [0,0,0,0],
+    table: {
+      // headers are automatically repeated if the table spans over multiple pages
+      // you can declare how many rows should be treated as headers
+      headerRows: 1,
+      widths: [ '*' ],
+      heights: 'auto',
+      body: [
+        [ '' ],
+        [logo],
+        [{
+          text: `Children's Hospital Los Angeles`,
+          margin: [0,25,0,6],
+          style: {
+              bold: true,
+              fontSize: 27,
+          },
+        }],
+        [{
+          text: `Operating or Procedure Room Terminal Cleaning Log`,
+          margin: [0,2,0,10],
+          style: {
+              bold: true,
+              fontSize: 19,
+          },
+        }],
+      ],
+    },
+    pageBreak: 'after',
+    pageOrientation: 'landscape',
+  }
 }
 
 function createTile(title: string, subTitle: string): Content[] {
@@ -27,15 +72,15 @@ function createTile(title: string, subTitle: string): Content[] {
       },
     },
     {
-    text: subTitle,
-    alignment: 'center',
-    margin: [0,-2,0,15],
-    style: {
-        // bold: true,
-        fontSize: 16,
-    },
-  }
-]
+      text: subTitle,
+      alignment: 'center',
+      margin: [0,-2,0,15],
+      style: {
+          // bold: true,
+          fontSize: 16,
+      },
+    }
+  ]
 }
 
 export const getCleaningControlPdf = (options: reportOptions) => {
@@ -47,13 +92,26 @@ export const getCleaningControlPdf = (options: reportOptions) => {
           width: 1100,
           height: 750
         },
-        header: headerSection({
-          title: `Children's Hospital Los Angeles`,
-          subTitle: 'Operating or Procedure Room Terminal Cleaning Log',
-        }),
-        footer: footerSection,
+        pageOrientation: 'portrait',
+        header: function (page) {
+          if (page === 1) {
+            return  
+          } else {
+            return headerSection({
+              title: `Children's Hospital Los Angeles`,
+              subTitle: 'Operating or Procedure Room Terminal Cleaning Log',
+            });
+          }
+        },
+        footer: function (page, pages) {
+          if (page === 1) {
+            return  footerSection2()
+          } 
+          return footerSection(page, pages);
+        },
         pageMargins: [40, 105, 40, 60],
         content: [
+          createCover(),
           ...createTile('Areas Log', areasDashboard1[0].name),
           createTableDashboard(areasDashboard1),
           ...createTile('Areas Log', areasDashboard2[0].name),

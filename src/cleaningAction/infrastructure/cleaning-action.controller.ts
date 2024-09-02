@@ -24,7 +24,7 @@ export class CleaningActionController {
     }
   }
 
-  @Get('/pdf')
+  @Get('/pdf/test')
   async exportPdf(@Res() res): Promise<void> {
 
     const buffer = await this.CleaningActionAdapter.exportPdf();
@@ -39,7 +39,7 @@ export class CleaningActionController {
 
   }
 
-  @Get('/pdf/test')
+  @Get('/pdf')
   async pdfTest(@Res() res){
 
     const pdfDoc = await this.CleaningActionAdapter.testPdf();

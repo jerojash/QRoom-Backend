@@ -224,7 +224,15 @@ function createTableDashboard(area: AreaEntity[], next: boolean = true): Content
           ] 
           : 
           [
-            room.name,
+            {
+              text: room.name,
+              link: `${url}/${room.name}`,
+              style: {
+                bold: true,
+                fontSize: 17,
+                color: '#002dfa'
+              }
+            },
             '',
             '',
             '',

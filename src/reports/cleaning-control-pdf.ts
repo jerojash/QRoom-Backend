@@ -221,7 +221,6 @@ function createTableDashboard(area: AreaEntity[], next: boolean = true): Content
             '',
             '',
             '',
-            '',
           ]
         )).flat()
       ],

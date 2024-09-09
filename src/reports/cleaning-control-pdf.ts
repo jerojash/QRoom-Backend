@@ -159,7 +159,7 @@ function createTableDashboard(area: AreaEntity[], next: boolean = true): Content
       // headers are automatically repeated if the table spans over multiple pages
       // you can declare how many rows should be treated as headers
       headerRows: 1,
-      widths: [ 90, 170, 165, '*' ],
+      widths: [ 130, 160, 165, '*' ],
       heights: 'auto',
       body: [
         // Columns Headers
@@ -193,7 +193,12 @@ function createTableDashboard(area: AreaEntity[], next: boolean = true): Content
           room.actions[0] ? [
             {
               text: room.name,
-              link: `${url}/${room.name}`
+              link: `${url}/${room.name}`,
+              style: {
+                bold: true,
+                fontSize: 17,
+                color: '#002dfa'
+              }
             },
             // If it has been more than 24 hours
             (new Date().getTime() - room.actions[0].initial_time_hk.getTime()) > 24 * 60 * 60 * 1000

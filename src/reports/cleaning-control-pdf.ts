@@ -196,8 +196,9 @@ function createTableDashboard(area: AreaEntity[], next: boolean = true): Content
               link: `${url}/${room.name}`,
               style: {
                 bold: true,
-                fontSize: 17,
-                color: '#002dfa'
+                fontSize: 14,
+                // color: '#002dfa'
+                // decoration: 'underline'
               }
             },
             // If it has been more than 24 hours
@@ -229,8 +230,9 @@ function createTableDashboard(area: AreaEntity[], next: boolean = true): Content
               link: `${url}/${room.name}`,
               style: {
                 bold: true,
-                fontSize: 17,
-                color: '#002dfa'
+                fontSize: 14,
+                // color: '#002dfa'
+                // decoration: 'underline'
               }
             },
             '',

@@ -151,6 +151,8 @@ function createTile(title: string, subTitle: string): Content[] {
 }
 
 function createTableDashboard(area: AreaEntity[], next: boolean = true): Content {
+  const url = `${process.env.URL}/api/cleaning-action/pdf`
+  console.log('url: ', url);
   return {
     layout: 'customLayout01', // optional
     table: {
@@ -191,7 +193,7 @@ function createTableDashboard(area: AreaEntity[], next: boolean = true): Content
           room.actions[0] ? [
             {
               text: room.name,
-              link: `${process.env.URL}/api/cleaning-action/pdf/${room.name}`
+              link: `${url}/${room.name}`
             },
             // If it has been more than 24 hours
             (new Date().getTime() - room.actions[0].initial_time_hk.getTime()) > 24 * 60 * 60 * 1000

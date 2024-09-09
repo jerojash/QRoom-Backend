@@ -24,25 +24,36 @@ export class CleaningActionController {
     }
   }
 
-  @Get('/pdf/test')
-  async exportPdf(@Res() res): Promise<void> {
+  // @Get('/pdf/test')
+  // async exportPdf(@Res() res): Promise<void> {
 
-    const buffer = await this.CleaningActionAdapter.exportPdf();
+  //   const buffer = await this.CleaningActionAdapter.exportPdf();
 
-    res.set({
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': 'attachment; filename-example.pdf',
-      'Content-Length': buffer.length,
-    })
+  //   res.set({
+  //     'Content-Type': 'application/pdf',
+  //     'Content-Disposition': 'attachment; filename-example.pdf',
+  //     'Content-Length': buffer.length,
+  //   })
 
-    res.end(buffer);
+  //   res.end(buffer);
+
+  // }
+
+  @Get('/pdf')
+  async getAreasLogDashboard(@Res() res){
+
+    const pdfDoc = await this.CleaningActionAdapter.getAreasLogDashboard();
+    res.setHeader('Content-Type', 'application/pdf');
+    pdfDoc.info.Title = 'Control Rooms'
+    pdfDoc.pipe(res);
+    pdfDoc.end();
 
   }
 
-  @Get('/pdf')
-  async pdfTest(@Res() res){
+  @Get('/pdf/:room')
+  async getRoomsLogReport(@Res() res, @Param('room') room: string){
 
-    const pdfDoc = await this.CleaningActionAdapter.testPdf();
+    const pdfDoc = await this.CleaningActionAdapter.getRoomsLog(room);
     res.setHeader('Content-Type', 'application/pdf');
     pdfDoc.info.Title = 'Control Rooms'
     pdfDoc.pipe(res);

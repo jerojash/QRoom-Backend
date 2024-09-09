@@ -10,7 +10,7 @@ import { UserEntity } from 'src/user/infrastructure/entities/user.entity';
 import { CleaningTypeEntity } from 'src/cleaningType/infrastructure/entities/cleaning-type.entity';
 import { join } from 'path';
 import { PrinterService } from 'src/printer/printer.service';
-import { getCleaningControlPdf } from 'src/reports';
+import { getDashboard, getLogByRooms } from 'src/reports';
 import { AreaEntity } from 'src/area/infrastructure/entities/area.entity';
 const PDFDocument = require('pdfkit-table');
 
@@ -31,7 +31,7 @@ export class CleaningActionAdapter implements ICleaningAction{
     private readonly printerService: PrinterService
   ){}
 
-  async testPdf() {
+  async getAreasLogDashboard() {
     const areasDashboard1 = await this.repoArea
       .createQueryBuilder('area')
       .leftJoinAndSelect('area.rooms', 'room')
@@ -82,6 +82,18 @@ export class CleaningActionAdapter implements ICleaningAction{
       .orderBy('area.order', 'ASC')
       .orderBy('room.order', 'ASC')
       .getMany();
+
+    const docDefinition = getDashboard({
+      areasDashboard1,
+      areasDashboard2,
+      areasDashboard3,
+    });
+    const doc = this.printerService.createPdf(docDefinition);
+    return doc;
+  }
+
+
+  async getRoomsLog(room_name: string) {
     
     //Get Cleaning Actions by Rooms
     const rooms = await this.repoRoom.find({
@@ -101,15 +113,13 @@ export class CleaningActionAdapter implements ICleaningAction{
         actions: {
           initial_time_hk: 'DESC'
         }
+      },
+      where: {
+        name: room_name
       }
     })
 
-    const docDefinition = getCleaningControlPdf({
-      areasDashboard1,
-      areasDashboard2,
-      areasDashboard3,
-      rooms
-    });
+    const docDefinition = getLogByRooms({ rooms });
     const doc = this.printerService.createPdf(docDefinition);
     return doc;
   }

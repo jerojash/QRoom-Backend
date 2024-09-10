@@ -1,5 +1,5 @@
 import { Content, TDocumentDefinitions } from "pdfmake/interfaces";
-import { headerSection } from "./sections/header-section";
+import { headerSection, headerSection2 } from "./sections/header-section";
 import { CleaningActionEntity } from "src/cleaningAction/infrastructure/entities/cleaning-action.entity";
 import { AreaEntity } from "src/area/infrastructure/entities/area.entity";
 import { footerSection, footerSection2 } from "./sections/footer-section";
@@ -22,6 +22,59 @@ const logo: Content = {
   alignment: 'center',
   margin: [0,280,0,10],
 };
+
+function calcularDiferenciaEnHoras(fechaInicio: Date, fechaFin: Date): string {
+  const diferenciaEnMilisegundos = fechaFin.getTime() - fechaInicio.getTime();
+  const diferenciaEnHoras = Math.ceil(diferenciaEnMilisegundos / (1000 * 60 * 60));
+
+  // Aseguramos que el resultado sea al menos 1, incluso si la diferencia es menor a una hora
+  return Math.max(diferenciaEnHoras, 1).toString();
+}
+
+function obtenerColorPorDiferenciaHoras(fechaInicio: Date, fechaFin: Date): string {
+  const diferenciaEnMilisegundos = fechaFin.getTime() - fechaInicio.getTime();
+  const diferenciaEnHoras = Math.ceil(diferenciaEnMilisegundos / (1000 * 60 * 60));
+
+  if (diferenciaEnHoras <= 19.59) {
+    return "#42A341";
+  } else if (diferenciaEnHoras <= 23.59) {
+    return "#F8FF2B";
+  } else {
+    return "#EB2C2B";
+  }
+}
+
+export const getDashboardExcel = (options: reportOptions) => {
+
+  const { areasDashboard1 } = options;
+  const currentDate = DateFormatter.getFormattedDate(new Date());
+
+    const docDefinition: TDocumentDefinitions = {
+        pageSize: {
+          width: 1120,
+          height: 1000
+        },
+        // pageOrientation: 'portrait',
+        header: headerSection2({
+          title: `Children's Hospital Los Angeles`,
+          subTitle: 'Operating or Procedure Room Terminal Cleaning Log',
+        }),
+        footer: footerSection,
+        pageOrientation: 'landscape',
+        pageMargins: [40, 105, 40, 60],
+        content: [
+          areasDashboard1.length > 0 ? 
+          [
+            ...createTileExcel('Dashboard', `Last Update: ${currentDate}`), 
+            createTableDashboardExcel(areasDashboard1, currentDate)
+          ]
+          : null
+          // rooms.length > 0 ? [...rooms.map((room) => createTableRooms(room))] : null
+        ].flat(),
+      };
+
+    return docDefinition;
+}
 
 export const getDashboard = (options: reportOptions) => {
 
@@ -150,6 +203,31 @@ function createTile(title: string, subTitle: string): Content[] {
   ]
 }
 
+function createTileExcel(title: string, subTitle: string): Content[] {
+  return [
+    {
+      text: title,
+      alignment: 'center',
+      margin: [0,-2,0,5],
+      style: {
+          bold: true,
+          fontSize: 20,
+      },
+      pageOrientation:'landscape',
+      // pageBreak: 'before',
+    },
+    {
+      text: subTitle,
+      alignment: 'left',
+      margin: [0,-2,0,15],
+      style: {
+          // bold: true,
+          fontSize: 12,
+      },
+    },
+  ]
+}
+
 function createTableDashboard(area: AreaEntity[], next: boolean = true): Content {
   const url = `${process.env.URL}/api/cleaning-action/pdf`
   console.log('url: ', url);
@@ -243,6 +321,302 @@ function createTableDashboard(area: AreaEntity[], next: boolean = true): Content
       ],
     },
     pageBreak: next ? 'after' : null,
+  }
+}
+
+function createTableDashboardExcel(area: AreaEntity[], currentDate: string): Content {
+  
+  return {
+    layout: 'customLayout02', // optional
+    table: {
+      // headers are automatically repeated if the table spans over multiple pages
+      // you can declare how many rows should be treated as headers
+      headerRows: 1,
+      widths: [ 127, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 42 ],
+      heights: 20,
+      body: [
+        // Columns Headers
+        [ {
+            text: 'Area',
+            style: {
+              bold: true,
+              alignment: 'center'
+            }
+          },
+          {
+            text: '1',
+            style: {
+              bold: true,
+              alignment: 'center'
+            }
+          }, 
+          {
+            text: '2',
+            style: {
+              bold: true,
+              alignment: 'center'
+            }
+          }, {
+            text: '3',
+            style: {
+              bold: true,
+              alignment: 'center'
+            }
+          }, 
+          {
+            text: '4',
+            style: {
+              bold: true,
+              alignment: 'center'
+            }
+          }, {
+            text: '5',
+            style: {
+              bold: true,
+              alignment: 'center'
+            }
+          }, 
+          {
+            text: '6',
+            style: {
+              bold: true,
+              alignment: 'center'
+            }
+          }, {
+            text: '7',
+            style: {
+              bold: true,
+              alignment: 'center'
+            }
+          }, 
+          {
+            text: '8',
+            style: {
+              bold: true,
+              alignment: 'center'
+            }
+          }, {
+            text: '9',
+            style: {
+              bold: true,
+              alignment: 'center'
+            }
+          }, 
+          {
+            text: '10',
+            style: {
+              bold: true,
+              alignment: 'center'
+            }
+          }, {
+            text: '11',
+            style: {
+              bold: true,
+              alignment: 'center'
+            }
+          }, 
+          {
+            text: '12',
+            style: {
+              bold: true,
+              alignment: 'center'
+            }
+          }, {
+            text: '13',
+            style: {
+              bold: true,
+              alignment: 'center'
+            }
+          }, 
+          {
+            text: '14',
+            style: {
+              bold: true,
+              alignment: 'center'
+            }
+          }, {
+            text: '15',
+            style: {
+              bold: true,
+              alignment: 'center'
+            }
+          }, 
+        ],
+          // Rows
+        ...area.map((area) => 
+        [
+          { text : area.name, 
+            style: { alignment: 'center' }
+          } , 
+          area.rooms[0] && area.rooms[0].actions[0] ? 
+          { text :`-${calcularDiferenciaEnHoras(area.rooms[0].actions[0].end_time_hk, new Date(currentDate) )}`, 
+            link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[0].name}`,
+            style: { 
+              alignment: 'center', 
+              fillColor: obtenerColorPorDiferenciaHoras(area.rooms[0].actions[0].end_time_hk, new Date(currentDate) ) 
+            }
+          } : 
+          { 
+            text: '' 
+          },
+          area.rooms[1] && area.rooms[1].actions[0] ? 
+          { text :`-${calcularDiferenciaEnHoras(area.rooms[1].actions[0].end_time_hk, new Date(currentDate) )}`, 
+            link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[1].name}`,
+            style: { 
+              alignment: 'center', 
+              fillColor: obtenerColorPorDiferenciaHoras(area.rooms[1].actions[0].end_time_hk, new Date(currentDate) ) 
+            }
+          } : 
+          { 
+            text: '' 
+          },
+          area.rooms[2] && area.rooms[2].actions[0] ? 
+          { text :`-${calcularDiferenciaEnHoras(area.rooms[2].actions[0].end_time_hk, new Date(currentDate) )}`, 
+            link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[2].name}`,
+            style: { 
+              alignment: 'center', 
+              fillColor: obtenerColorPorDiferenciaHoras(area.rooms[2].actions[0].end_time_hk, new Date(currentDate) ) 
+            }
+          } : 
+          { 
+            text: '' 
+          },
+          area.rooms[3] && area.rooms[3].actions[0] ? 
+          { text :`-${calcularDiferenciaEnHoras(area.rooms[3].actions[0].end_time_hk, new Date(currentDate) )}`, 
+            link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[3].name}`,
+            style: { 
+              alignment: 'center', 
+              fillColor: obtenerColorPorDiferenciaHoras(area.rooms[3].actions[0].end_time_hk, new Date(currentDate) ) 
+            }
+          }: 
+          { 
+            text: '' 
+          },
+          area.rooms[4] && area.rooms[4].actions[0] ? 
+          { text :`-${calcularDiferenciaEnHoras(area.rooms[4].actions[0].end_time_hk, new Date(currentDate) )}`, 
+            link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[4].name}`,
+            style: { 
+              alignment: 'center', 
+              fillColor: obtenerColorPorDiferenciaHoras(area.rooms[4].actions[0].end_time_hk, new Date(currentDate) ) 
+            }
+          } : 
+          { 
+            text: '' 
+          },
+          area.rooms[5] && area.rooms[5].actions[0] ? 
+          { text :`-${calcularDiferenciaEnHoras(area.rooms[5].actions[0].end_time_hk, new Date(currentDate) )}`, 
+            link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[5].name}`,
+            style: { 
+              alignment: 'center', 
+              fillColor: obtenerColorPorDiferenciaHoras(area.rooms[5].actions[0].end_time_hk, new Date(currentDate) ) 
+            }
+          } : 
+          { 
+            text: '' 
+          },
+          area.rooms[6] && area.rooms[6].actions[0] ? 
+          { text :`-${calcularDiferenciaEnHoras(area.rooms[6].actions[0].end_time_hk, new Date(currentDate) )}`, 
+            link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[6].name}`,
+            style: { 
+              alignment: 'center', 
+              fillColor: obtenerColorPorDiferenciaHoras(area.rooms[6].actions[0].end_time_hk, new Date(currentDate) ) 
+            }
+          } : 
+          { 
+            text: '' 
+          },
+          area.rooms[7] && area.rooms[7].actions[0] ? 
+          { text :`-${calcularDiferenciaEnHoras(area.rooms[7].actions[0].end_time_hk, new Date(currentDate) )}`, 
+            link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[7].name}`,
+            style: { 
+              alignment: 'center', 
+              fillColor: obtenerColorPorDiferenciaHoras(area.rooms[7].actions[0].end_time_hk, new Date(currentDate) ) 
+            }
+          }: 
+          { 
+            text: '' 
+          },
+          area.rooms[8] && area.rooms[8].actions[0] ? 
+          { text :`-${calcularDiferenciaEnHoras(area.rooms[8].actions[0].end_time_hk, new Date(currentDate) )}`, 
+            link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[8].name}`,
+            style: { 
+              alignment: 'center', 
+              fillColor: obtenerColorPorDiferenciaHoras(area.rooms[8].actions[0].end_time_hk, new Date(currentDate) ) 
+            }
+          } : 
+          { 
+            text: '' 
+          },
+          area.rooms[9] && area.rooms[9].actions[0] ? 
+          { text :`-${calcularDiferenciaEnHoras(area.rooms[9].actions[0].end_time_hk, new Date(currentDate) )}`, 
+            link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[9].name}`,
+            style: { 
+              alignment: 'center', 
+              fillColor: obtenerColorPorDiferenciaHoras(area.rooms[9].actions[0].end_time_hk, new Date(currentDate) ) 
+            }
+          } : 
+          { 
+            text: '' 
+          },
+          area.rooms[10]&& area.rooms[10].actions[0]  ? 
+          { text :`-${calcularDiferenciaEnHoras(area.rooms[10].actions[0].end_time_hk, new Date(currentDate) )}`, 
+            link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[10].name}`,
+            style: { 
+              alignment: 'center', 
+              fillColor: obtenerColorPorDiferenciaHoras(area.rooms[10].actions[0].end_time_hk, new Date(currentDate) ) 
+            }
+          } : 
+          { 
+            text: '' 
+          },
+          area.rooms[11]&& area.rooms[11].actions[0]  ? 
+          { text :`-${calcularDiferenciaEnHoras(area.rooms[11].actions[0].end_time_hk, new Date(currentDate) )}`, 
+            link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[11].name}`,
+            style: { 
+              alignment: 'center', 
+              fillColor: obtenerColorPorDiferenciaHoras(area.rooms[11].actions[0].end_time_hk, new Date(currentDate) ) 
+            }
+          }: 
+          { 
+            text: '' 
+          },
+          area.rooms[12]&& area.rooms[12].actions[0]  ? 
+          { text :`-${calcularDiferenciaEnHoras(area.rooms[12].actions[0].end_time_hk, new Date(currentDate) )}`, 
+            link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[12].name}`,
+            style: { 
+              alignment: 'center', 
+              fillColor: obtenerColorPorDiferenciaHoras(area.rooms[12].actions[0].end_time_hk, new Date(currentDate) ) 
+            }
+          }: 
+          { 
+            text: '' 
+          },
+          area.rooms[13]&& area.rooms[13].actions[0]  ? 
+          { text :`-${calcularDiferenciaEnHoras(area.rooms[13].actions[0].end_time_hk, new Date(currentDate) )}`, 
+            link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[13].name}`,
+            style: { 
+              alignment: 'center', 
+              fillColor: obtenerColorPorDiferenciaHoras(area.rooms[13].actions[0].end_time_hk, new Date(currentDate) ) 
+            }
+          } : 
+          { 
+            text: '' 
+          },
+          area.rooms[14]&& area.rooms[14].actions[0]  ? 
+          { text :`-${calcularDiferenciaEnHoras(area.rooms[14].actions[0].end_time_hk, new Date(currentDate) )}`, 
+            link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[14].name}`,
+            style: { 
+              alignment: 'center', 
+              fillColor: obtenerColorPorDiferenciaHoras(area.rooms[14].actions[0].end_time_hk, new Date(currentDate) ) 
+            }
+          } : 
+          { 
+            text: '' 
+          },
+        ]
+        )
+      ],
+    },
   }
 }
 

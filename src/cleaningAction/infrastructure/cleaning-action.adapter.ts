@@ -10,7 +10,7 @@ import { UserEntity } from 'src/user/infrastructure/entities/user.entity';
 import { CleaningTypeEntity } from 'src/cleaningType/infrastructure/entities/cleaning-type.entity';
 import { join } from 'path';
 import { PrinterService } from 'src/printer/printer.service';
-import { getDashboard, getLogByRooms } from 'src/reports';
+import { getDashboard, getDashboardExcel, getLogByRooms } from 'src/reports';
 import { AreaEntity } from 'src/area/infrastructure/entities/area.entity';
 const PDFDocument = require('pdfkit-table');
 
@@ -92,6 +92,27 @@ export class CleaningActionAdapter implements ICleaningAction{
     return doc;
   }
 
+  async getAreasLogDashboardExcel() {
+    const areasDashboard1 = await this.repoArea
+      .createQueryBuilder('area')
+      .leftJoinAndSelect('area.rooms', 'room')
+      .leftJoinAndSelect(
+        'room.actions',
+        'action',
+        'action.id = (SELECT a.id FROM cleaning_action a WHERE a.room_id = room.id ORDER BY a.initial_time_hk DESC LIMIT 1)'
+      )
+      .leftJoinAndSelect('action.hk_', 'hk')
+      .leftJoinAndSelect('action.cleaning_type_', 'cleaningType')
+      // .where('area.name IN (:...names)', { names: ['Main OR', 'SPD'] })
+      .orderBy('room.order', 'ASC')
+      .getMany();
+
+    const docDefinition = getDashboardExcel({
+      areasDashboard1,
+    });
+    const doc = this.printerService.createPdf(docDefinition);
+    return doc;
+  }
 
   async getRoomsLog(room_name: string) {
     

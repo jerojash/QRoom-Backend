@@ -39,7 +39,7 @@ export class CleaningActionController {
 
   // }
 
-  @Get('/pdf')
+  @Get('/pdf/v2')
   async getAreasLogDashboard(@Res() res){
 
     const pdfDoc = await this.CleaningActionAdapter.getAreasLogDashboard();
@@ -54,6 +54,17 @@ export class CleaningActionController {
   async getRoomsLogReport(@Res() res, @Param('room') room: string){
 
     const pdfDoc = await this.CleaningActionAdapter.getRoomsLog(room);
+    res.setHeader('Content-Type', 'application/pdf');
+    pdfDoc.info.Title = 'Control Rooms'
+    pdfDoc.pipe(res);
+    pdfDoc.end();
+
+  }
+
+  @Get('/pdf')
+  async getDashboardExcel(@Res() res){
+
+    const pdfDoc = await this.CleaningActionAdapter.getAreasLogDashboardExcel();
     res.setHeader('Content-Type', 'application/pdf');
     pdfDoc.info.Title = 'Control Rooms'
     pdfDoc.pipe(res);

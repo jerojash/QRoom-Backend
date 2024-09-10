@@ -99,7 +99,14 @@ export class CleaningActionAdapter implements ICleaningAction{
       .leftJoinAndSelect(
         'room.actions',
         'action',
-        'action.id = (SELECT a.id FROM cleaning_action a WHERE a.room_id = room.id ORDER BY a.initial_time_hk DESC LIMIT 1)'
+        `action.id = (
+          SELECT a.id 
+          FROM cleaning_action a 
+          LEFT JOIN cleaning_type ct ON a."cleaningType_id"  = ct.id 
+          WHERE a.room_id = room.id AND ct.name != 'Blocked (Not Terminal Cleaned)'
+          ORDER BY a.end_time_hk DESC 
+          LIMIT 1
+        )`
       )
       .leftJoinAndSelect('action.hk_', 'hk')
       .leftJoinAndSelect('action.cleaning_type_', 'cleaningType')

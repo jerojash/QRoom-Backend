@@ -23,12 +23,24 @@ const logo: Content = {
   margin: [0,280,0,10],
 };
 
-function calcularDiferenciaEnHoras(fechaInicio: Date, fechaFin: Date): string {
-  const diferenciaEnMilisegundos = fechaFin.getTime() - fechaInicio.getTime();
-  const diferenciaEnHoras = Math.ceil(diferenciaEnMilisegundos / (1000 * 60 * 60));
+function calcularDiferenciaEnHoras(fecha1: Date, fecha2: Date): number {
+  // Calculamos la diferencia en milisegundos
+  const diferenciaMilisegundos = Math.abs(fecha2.getTime() - fecha1.getTime());
 
-  // Aseguramos que el resultado sea al menos 1, incluso si la diferencia es menor a una hora
-  return Math.max(diferenciaEnHoras, 1).toString();
+  // Convertimos la diferencia a horas y redondeamos hacia abajo
+  const diferenciaHoras = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60));
+
+  // Retornamos 0 si la diferencia es menor a una hora
+  return diferenciaHoras > 0 ? diferenciaHoras : 0;
+}
+
+function getCurrentDateInGMT8(): Date {
+  const date = new Date();
+  // Obtenemos la hora UTC
+  const utc = date.getTime() + date.getTimezoneOffset() * 60000;
+  // Sumamos 8 horas para GMT+8
+  const gmt8 = new Date(utc - 7 * 3600000);
+  return gmt8;
 }
 
 function obtenerColorPorDiferenciaHoras(fechaInicio: Date, fechaFin: Date): string {
@@ -47,7 +59,11 @@ function obtenerColorPorDiferenciaHoras(fechaInicio: Date, fechaFin: Date): stri
 export const getDashboardExcel = (options: reportOptions) => {
 
   const { areasDashboard1 } = options;
-  const currentDate = DateFormatter.getFormattedDate(new Date());
+  const gmt8 = getCurrentDateInGMT8();
+  console.log('GMT8: ', gmt8);
+  const currentDate = DateFormatter.getFormattedDate(gmt8);
+
+  console.log('CURRENT DATE: ', currentDate);
 
     const docDefinition: TDocumentDefinitions = {
         pageSize: {
@@ -449,7 +465,7 @@ function createTableDashboardExcel(area: AreaEntity[], currentDate: string): Con
             style: { alignment: 'center' }
           } , 
           area.rooms[0] && area.rooms[0].actions[0] ? 
-          { text :`-${calcularDiferenciaEnHoras(area.rooms[0].actions[0].end_time_hk, new Date(currentDate) )}`, 
+          { text :`${calcularDiferenciaEnHoras(area.rooms[0].actions[0].end_time_hk, new Date(currentDate) )}`, 
             link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[0].name}`,
             style: { 
               alignment: 'center', 
@@ -460,7 +476,7 @@ function createTableDashboardExcel(area: AreaEntity[], currentDate: string): Con
             text: '' 
           },
           area.rooms[1] && area.rooms[1].actions[0] ? 
-          { text :`-${calcularDiferenciaEnHoras(area.rooms[1].actions[0].end_time_hk, new Date(currentDate) )}`, 
+          { text :`${calcularDiferenciaEnHoras(area.rooms[1].actions[0].end_time_hk, new Date(currentDate) )}`, 
             link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[1].name}`,
             style: { 
               alignment: 'center', 
@@ -471,7 +487,7 @@ function createTableDashboardExcel(area: AreaEntity[], currentDate: string): Con
             text: '' 
           },
           area.rooms[2] && area.rooms[2].actions[0] ? 
-          { text :`-${calcularDiferenciaEnHoras(area.rooms[2].actions[0].end_time_hk, new Date(currentDate) )}`, 
+          { text :`${calcularDiferenciaEnHoras(area.rooms[2].actions[0].end_time_hk, new Date(currentDate) )}`, 
             link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[2].name}`,
             style: { 
               alignment: 'center', 
@@ -482,7 +498,7 @@ function createTableDashboardExcel(area: AreaEntity[], currentDate: string): Con
             text: '' 
           },
           area.rooms[3] && area.rooms[3].actions[0] ? 
-          { text :`-${calcularDiferenciaEnHoras(area.rooms[3].actions[0].end_time_hk, new Date(currentDate) )}`, 
+          { text :`${calcularDiferenciaEnHoras(area.rooms[3].actions[0].end_time_hk, new Date(currentDate) )}`, 
             link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[3].name}`,
             style: { 
               alignment: 'center', 
@@ -493,7 +509,7 @@ function createTableDashboardExcel(area: AreaEntity[], currentDate: string): Con
             text: '' 
           },
           area.rooms[4] && area.rooms[4].actions[0] ? 
-          { text :`-${calcularDiferenciaEnHoras(area.rooms[4].actions[0].end_time_hk, new Date(currentDate) )}`, 
+          { text :`${calcularDiferenciaEnHoras(area.rooms[4].actions[0].end_time_hk, new Date(currentDate) )}`, 
             link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[4].name}`,
             style: { 
               alignment: 'center', 
@@ -504,7 +520,7 @@ function createTableDashboardExcel(area: AreaEntity[], currentDate: string): Con
             text: '' 
           },
           area.rooms[5] && area.rooms[5].actions[0] ? 
-          { text :`-${calcularDiferenciaEnHoras(area.rooms[5].actions[0].end_time_hk, new Date(currentDate) )}`, 
+          { text :`${calcularDiferenciaEnHoras(area.rooms[5].actions[0].end_time_hk, new Date(currentDate) )}`, 
             link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[5].name}`,
             style: { 
               alignment: 'center', 
@@ -515,7 +531,7 @@ function createTableDashboardExcel(area: AreaEntity[], currentDate: string): Con
             text: '' 
           },
           area.rooms[6] && area.rooms[6].actions[0] ? 
-          { text :`-${calcularDiferenciaEnHoras(area.rooms[6].actions[0].end_time_hk, new Date(currentDate) )}`, 
+          { text :`${calcularDiferenciaEnHoras(area.rooms[6].actions[0].end_time_hk, new Date(currentDate) )}`, 
             link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[6].name}`,
             style: { 
               alignment: 'center', 
@@ -526,7 +542,7 @@ function createTableDashboardExcel(area: AreaEntity[], currentDate: string): Con
             text: '' 
           },
           area.rooms[7] && area.rooms[7].actions[0] ? 
-          { text :`-${calcularDiferenciaEnHoras(area.rooms[7].actions[0].end_time_hk, new Date(currentDate) )}`, 
+          { text :`${calcularDiferenciaEnHoras(area.rooms[7].actions[0].end_time_hk, new Date(currentDate) )}`, 
             link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[7].name}`,
             style: { 
               alignment: 'center', 
@@ -537,7 +553,7 @@ function createTableDashboardExcel(area: AreaEntity[], currentDate: string): Con
             text: '' 
           },
           area.rooms[8] && area.rooms[8].actions[0] ? 
-          { text :`-${calcularDiferenciaEnHoras(area.rooms[8].actions[0].end_time_hk, new Date(currentDate) )}`, 
+          { text :`${calcularDiferenciaEnHoras(area.rooms[8].actions[0].end_time_hk, new Date(currentDate) )}`, 
             link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[8].name}`,
             style: { 
               alignment: 'center', 
@@ -548,7 +564,7 @@ function createTableDashboardExcel(area: AreaEntity[], currentDate: string): Con
             text: '' 
           },
           area.rooms[9] && area.rooms[9].actions[0] ? 
-          { text :`-${calcularDiferenciaEnHoras(area.rooms[9].actions[0].end_time_hk, new Date(currentDate) )}`, 
+          { text :`${calcularDiferenciaEnHoras(area.rooms[9].actions[0].end_time_hk, new Date(currentDate) )}`, 
             link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[9].name}`,
             style: { 
               alignment: 'center', 
@@ -559,7 +575,7 @@ function createTableDashboardExcel(area: AreaEntity[], currentDate: string): Con
             text: '' 
           },
           area.rooms[10]&& area.rooms[10].actions[0]  ? 
-          { text :`-${calcularDiferenciaEnHoras(area.rooms[10].actions[0].end_time_hk, new Date(currentDate) )}`, 
+          { text :`${calcularDiferenciaEnHoras(area.rooms[10].actions[0].end_time_hk, new Date(currentDate) )}`, 
             link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[10].name}`,
             style: { 
               alignment: 'center', 
@@ -570,7 +586,7 @@ function createTableDashboardExcel(area: AreaEntity[], currentDate: string): Con
             text: '' 
           },
           area.rooms[11]&& area.rooms[11].actions[0]  ? 
-          { text :`-${calcularDiferenciaEnHoras(area.rooms[11].actions[0].end_time_hk, new Date(currentDate) )}`, 
+          { text :`${calcularDiferenciaEnHoras(area.rooms[11].actions[0].end_time_hk, new Date(currentDate) )}`, 
             link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[11].name}`,
             style: { 
               alignment: 'center', 
@@ -581,7 +597,7 @@ function createTableDashboardExcel(area: AreaEntity[], currentDate: string): Con
             text: '' 
           },
           area.rooms[12]&& area.rooms[12].actions[0]  ? 
-          { text :`-${calcularDiferenciaEnHoras(area.rooms[12].actions[0].end_time_hk, new Date(currentDate) )}`, 
+          { text :`${calcularDiferenciaEnHoras(area.rooms[12].actions[0].end_time_hk, new Date(currentDate) )}`, 
             link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[12].name}`,
             style: { 
               alignment: 'center', 
@@ -592,7 +608,7 @@ function createTableDashboardExcel(area: AreaEntity[], currentDate: string): Con
             text: '' 
           },
           area.rooms[13]&& area.rooms[13].actions[0]  ? 
-          { text :`-${calcularDiferenciaEnHoras(area.rooms[13].actions[0].end_time_hk, new Date(currentDate) )}`, 
+          { text :`${calcularDiferenciaEnHoras(area.rooms[13].actions[0].end_time_hk, new Date(currentDate) )}`, 
             link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[13].name}`,
             style: { 
               alignment: 'center', 
@@ -603,7 +619,7 @@ function createTableDashboardExcel(area: AreaEntity[], currentDate: string): Con
             text: '' 
           },
           area.rooms[14]&& area.rooms[14].actions[0]  ? 
-          { text :`-${calcularDiferenciaEnHoras(area.rooms[14].actions[0].end_time_hk, new Date(currentDate) )}`, 
+          { text :`${calcularDiferenciaEnHoras(area.rooms[14].actions[0].end_time_hk, new Date(currentDate) )}`, 
             link: `${process.env.URL}/api/cleaning-action/pdf/${area.rooms[14].name}`,
             style: { 
               alignment: 'center', 

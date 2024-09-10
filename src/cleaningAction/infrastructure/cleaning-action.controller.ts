@@ -39,7 +39,7 @@ export class CleaningActionController {
 
   // }
 
-  @Get('/pdf')
+  @Get('/pdf/v2')
   async getAreasLogDashboard(@Res() res){
 
     const pdfDoc = await this.CleaningActionAdapter.getAreasLogDashboard();
@@ -61,7 +61,7 @@ export class CleaningActionController {
 
   }
 
-  @Get('/excel')
+  @Get('/pdf')
   async getDashboardExcel(@Res() res){
 
     const pdfDoc = await this.CleaningActionAdapter.getAreasLogDashboardExcel();

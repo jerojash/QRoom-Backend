@@ -61,6 +61,17 @@ export class CleaningActionController {
 
   }
 
+  @Get('/excel')
+  async getDashboardExcel(@Res() res){
+
+    const pdfDoc = await this.CleaningActionAdapter.getAreasLogDashboardExcel();
+    res.setHeader('Content-Type', 'application/pdf');
+    pdfDoc.info.Title = 'Control Rooms'
+    pdfDoc.pipe(res);
+    pdfDoc.end();
+
+  }
+
   // @Get(':id')
   // findOne(@Param('id') id: string) {
   //   return this.CleaningActionAdapter.findOne(+id);

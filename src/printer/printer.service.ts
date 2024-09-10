@@ -44,6 +44,42 @@ const customTableLayouts: Record<string, CustomTableLayout> = {
       return null;
     },
   },
+  customLayout02: {
+    hLineWidth: function (i, node) {
+      if (i === 0) {
+        return 0;
+      }
+      return i === node.table.headerRows ? 2 : 1;
+    },
+    vLineWidth: function (i) {
+      return 1;
+    },
+    hLineColor: function (i) {
+      return i === 1 ? 'black' : '#bbbbbb';
+    },
+    vLineColor: function (i) {
+      return i === 1 ? 'black' : '#bbbbbb';
+    },
+    paddingLeft: function (i) {
+      return i === 0 ? 4 : 12;
+    },
+    paddingRight: function (i, node) {
+      return i === node.table.widths.length - 1 ? 0 : 8;
+    },
+    paddingBottom: function (i, node) {
+      return i === 0 ? 7 : 3;
+    },
+    paddingTop: function (i, node) {
+      return i === 0 ? 7 : 12;
+    },
+    fillColor: function (i, node) {
+      if (i === 0) {
+        return '#e0dddd';
+      }
+
+      return null;
+    },
+  },
 };
 
 @Injectable()

@@ -235,10 +235,37 @@ function createTileExcel(title: string, subTitle: string): Content[] {
     {
       text: subTitle,
       alignment: 'left',
-      margin: [0,-2,0,15],
+      margin: [0,-2,0,13],
+      style: {
+          bold: true,
+          fontSize: 16,
+      },
+    },
+    {
+      text: 'Green: 0 to 19:59h',
+      alignment: 'left',
+      margin: [0,-2,0,6],
       style: {
           // bold: true,
-          fontSize: 12,
+          fontSize: 14,
+      },
+    },
+    {
+      text: 'Yellow: 20h to 23:59h',
+      alignment: 'left',
+      margin: [0,-2,0,6],
+      style: {
+          // bold: true,
+          fontSize: 14,
+      },
+    },
+    {
+      text: 'Red: 24h+',
+      alignment: 'left',
+      margin: [0,-2,0,6],
+      style: {
+          // bold: true,
+          fontSize: 14,
       },
     },
   ]

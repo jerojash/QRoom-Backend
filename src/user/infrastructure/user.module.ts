@@ -7,14 +7,19 @@ import { createUserService } from '../application/createUserService';
 import { getUserService } from '../application/getUserService';
 import { RolEntity } from 'src/rol/infrastructure/entities/rol.entity';
 import { authService } from '../application/authService';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   controllers: [UserController],
-  providers: [adapterUserRepository, createUserService, getUserService,
-  authService],
-  imports:[
+  providers: [
+    adapterUserRepository,
+    createUserService,
+    getUserService,
+    authService,
+  ],
+  imports: [
     TypeOrmModule.forFeature([UserEntity]),
-    TypeOrmModule.forFeature([RolEntity])
-  ]
+    TypeOrmModule.forFeature([RolEntity]),
+  ],
 })
 export class UserModule {}

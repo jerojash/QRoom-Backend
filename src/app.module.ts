@@ -10,10 +10,17 @@ import { CleaningActionModule } from './cleaningAction/infrastructure/cleaning-a
 import { PermissionsModule } from './permissions/infrastructure/permissions.module';
 import { PrinterModule } from './printer/printer.module';
 import { AreaModule } from './area/infrastructure/area.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [UserModule, RolModule, RoomModule, CleaningTypeModule,
-    CleaningCheckModule, CleaningActionModule, PrinterModule,
+  imports: [
+    UserModule,
+    RolModule,
+    RoomModule,
+    CleaningTypeModule,
+    CleaningCheckModule,
+    CleaningActionModule,
+    PrinterModule,
     ConfigModule.forRoot(),
 
     TypeOrmModule.forRoot({
@@ -24,12 +31,16 @@ import { AreaModule } from './area/infrastructure/area.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASS,
       autoLoadEntities: true,
-      synchronize: true
+      synchronize: true,
     }),
 
     PermissionsModule,
 
     AreaModule,
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+    }),
   ],
 })
 export class AppModule {}

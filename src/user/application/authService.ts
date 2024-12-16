@@ -7,7 +7,7 @@ export class authService<T> {
     constructor(repo: IUser<T>) {
         this.UserRepository = repo;
     }
-    async execute(authDto: AuthUserDto): Promise<Either<Error,T>>{
+    async execute(authDto: AuthUserDto): Promise<Either<Error,string>>{
         return this.UserRepository.authUser(authDto.email, authDto.password)
     }
 }

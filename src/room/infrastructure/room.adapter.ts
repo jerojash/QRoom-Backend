@@ -157,7 +157,7 @@ function checkCleaningStatus(date: Date | undefined):
 
   // Obtener la fecha actual en GMT8
   const now = new Date();
-  now.setUTCHours(now.getUTCHours() + 8); // Ajustamos a GMT8
+  now.setUTCHours(now.getUTCHours() - 7); // Ajustamos a GMT8
 
   // Calcular la diferencia en milisegundos
   const diffInMs = now.getTime() - date.getTime();

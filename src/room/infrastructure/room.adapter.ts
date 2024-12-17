@@ -138,7 +138,7 @@ export class adapterRoomRepository implements IRoom<RoomEntity> {
       return Either.makeRight<Error, any>({
         ...result,
         ...status,
-        lasCleaningAction: cleaning_action[0].cleaning_type_.name ?? null,
+        lastCleaningAction: cleaning_action[0].cleaning_type_.name ?? null,
       });
     } catch (error) {
       console.log(error);

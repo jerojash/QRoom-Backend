@@ -55,15 +55,6 @@ export class adapterUserRepository implements IUser<UserEntity> {
   async getUsers(): Promise<Either<Error, UserEntity[]>> {
     try {
       let result = await this.repository.find();
-      console.log('RESULT: ', result);
-
-      result.map(async (user) => {
-        user.email = 'newemail@mail.com'
-        const passwordHash = await hash(user.password, 10);
-        user.password = passwordHash;
-        await user.save()
-      })
-      console.log('new RESULT: ', result);
       return Either.makeRight<Error, UserEntity[]>(result);
     } catch (error) {
       return Either.makeLeft<Error, UserEntity[]>(

@@ -178,7 +178,7 @@ function checkCleaningStatus(date: Date | undefined):
   }
 
   // Determinar el estado de limpieza
-  const status = diffInHours <= 24 ? 'Clean' : 'Not Clean';
+  const status = diffInHours <= 24 ? 'Clean' : 'Unclean';
 
   return { lastCleaning, status };
 }

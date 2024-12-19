@@ -88,4 +88,56 @@ export class adapterUserRepository implements IUser<UserEntity> {
 
     return Either.makeRight(token);
   }
+
+  async sendEmailPasswordRecovery(
+    email: string
+  ): Promise<Either<Error, string>> {
+    const userLog = await this.repository.findOne({
+      where: { email: email },
+      relations: {
+        rol: true,
+      },
+    });
+    if (!userLog) return Either.makeLeft(new Error('Usuario no encontrado'));
+
+    // Creamos un array de 10 dígitos (del 0 al 9)
+    const digits = '0123456789';
+
+    // Inicializamos una cadena vacía para almacenar el resultado
+    let result = '';
+
+    // Iteramos 8 veces para generar cada dígito del string
+    for (let i = 0; i < 8; i++) {
+      // Obtenemos un índice aleatorio dentro del array de dígitos
+      const randomIndex = Math.floor(Math.random() * digits.length);
+
+      // Agregamos el dígito aleatorio al resultado
+      result += digits[randomIndex];
+    }
+
+    return Either.makeRight(result);
+  }
+
+  async updateUserPassword(
+    email: string,
+    password: string
+  ): Promise<Either<Error, UserEntity>> {
+    const user = await this.repository.findOne({
+      where: { email: email },
+      relations: {
+        rol: true,
+      },
+    });
+    if (!user) return Either.makeLeft(new Error('Usuario no encontrado'));
+
+    const passwordHash = await hash(password, 10);
+
+    user.password = passwordHash;
+
+    await user.save();
+
+    delete user.password;
+
+    return Either.makeRight(user);
+  }
 }

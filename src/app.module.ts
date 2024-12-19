@@ -21,7 +21,11 @@ import { JwtModule } from '@nestjs/jwt';
     CleaningCheckModule,
     CleaningActionModule,
     PrinterModule,
-    ConfigModule.forRoot(),
+    // ConfigModule.forRoot(),
+
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
 
     TypeOrmModule.forRoot({
       type: 'postgres',

@@ -10,6 +10,7 @@ import { User } from '../domain/User';
 import { RolEntity } from 'src/rol/infrastructure/entities/rol.entity';
 import { hash, compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class adapterUserRepository implements IUser<UserEntity> {
@@ -20,7 +21,8 @@ export class adapterUserRepository implements IUser<UserEntity> {
     @InjectRepository(RolEntity)
     private readonly repositoryRol: Repository<RolEntity>,
 
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private mailerService: MailerService
   ) {}
 
   async userRegister(user: User): Promise<Either<Error, UserEntity>> {
@@ -114,6 +116,16 @@ export class adapterUserRepository implements IUser<UserEntity> {
       // Agregamos el dígito aleatorio al resultado
       result += digits[randomIndex];
     }
+
+    await this.mailerService.sendMail({
+      to: email,
+      subject: 'Password Recovery',
+      template: './welcome',
+      context: {
+        name: `${userLog.first_name}`,
+        code: result,
+      },
+    });
 
     return Either.makeRight(result);
   }

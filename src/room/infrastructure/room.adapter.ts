@@ -123,9 +123,9 @@ export class adapterRoomRepository implements IRoom<RoomEntity> {
         take: 1,
       });
 
-      const status = checkCleaningStatus(
-        new Date(cleaning_action[0].end_time_hk)
-      );
+      let status = { lastCleaning: 'Not cleaned yet', status: 'Unclean' };
+      if (cleaning_action.length !== 0)
+        status = checkCleaningStatus(new Date(cleaning_action[0].end_time_hk));
 
       // const permission = await this.repoPermissions.findOne({
       //   where: {
@@ -138,7 +138,10 @@ export class adapterRoomRepository implements IRoom<RoomEntity> {
       return Either.makeRight<Error, any>({
         ...result,
         ...status,
-        lastCleaningAction: cleaning_action[0].cleaning_type_.name ?? null,
+        lastCleaningAction:
+          cleaning_action.length !== 0
+            ? cleaning_action[0].cleaning_type_.name
+            : 'Not cleaned yet',
       });
     } catch (error) {
       console.log(error);

@@ -14,7 +14,7 @@ export class createCleaningCheckService<T> {
     // const cleaningCheck = CleaningCheck.create(dto.name, dto.order,
     //     dto.type_id, dto.id_parent_task);
 
-    dto.name.map(async (name, index) => {
+    for (const [index, name] of dto.name.entries()) {
       console.log('value: ', name);
       cleaningCheck = CleaningCheck.create(
         name,
@@ -22,14 +22,15 @@ export class createCleaningCheckService<T> {
         dto.type_id ?? null,
         dto.id_parent_task ?? null
       );
-      console.log('\n\nCHECK: ', cleaningCheck);
       result = await this.CleaningCheckRepository.createCleaningCheck(
         cleaningCheck
       );
-    });
+    //   await new Promise((resolve) => setTimeout(resolve, 3000));
+    }
 
     // let result =
     //   this.CleaningCheckRepository.createCleaningCheck(cleaningCheck);
+    console.log('\n\nRESULT: ', result);
     return result;
   }
 }

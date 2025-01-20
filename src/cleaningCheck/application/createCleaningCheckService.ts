@@ -14,20 +14,19 @@ export class createCleaningCheckService<T> {
     // const cleaningCheck = CleaningCheck.create(dto.name, dto.order,
     //     dto.type_id, dto.id_parent_task);
 
-    await Promise.all(
-      dto.name.map(async (name, index) => {
-        console.log('value: ', name);
-        cleaningCheck = CleaningCheck.create(
-          name,
-          dto.order + index,
-          dto.type_id ?? null,
-          dto.id_parent_task ?? null
-        );
-        console.log('\n\nCHECK: ', cleaningCheck);
-        result =
-          this.CleaningCheckRepository.createCleaningCheck(cleaningCheck);
-      })
-    );
+    dto.name.map(async (name, index) => {
+      console.log('value: ', name);
+      cleaningCheck = CleaningCheck.create(
+        name,
+        dto.order + index,
+        dto.type_id ?? null,
+        dto.id_parent_task ?? null
+      );
+      console.log('\n\nCHECK: ', cleaningCheck);
+      result = await this.CleaningCheckRepository.createCleaningCheck(
+        cleaningCheck
+      );
+    });
 
     // let result =
     //   this.CleaningCheckRepository.createCleaningCheck(cleaningCheck);
